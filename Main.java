@@ -8,6 +8,9 @@ class Main{
 	
 	public static final int N = 1000000;
 	
+	public static List<Double> a = new ArrayList<Double>(); // Parâmetro de discriminação
+    public static List<Double> b = new ArrayList<Double>(); // Parâmetro de dificuldade
+	
 	// Métodos auxiliares
 	private static void escreveArquivo(String arquivo, List<String[]> dados) {
 		Iterator<String[]> it = dados.iterator();
@@ -46,7 +49,7 @@ class Main{
 	// Métodos auxiliares
 	
 	// Métodos funcionais
-	public static void melhorAluno(List a, List b){
+	public static void melhorAluno(){
 				
 		Integer[] arr = new Integer[100];
 		for (int i = 0; i < arr.length; i++) {
@@ -146,7 +149,7 @@ class Main{
 		
 	}
 	
-	public static void melhorProva(List a, List b){
+	public static void melhorProva(){
 		HashMap probs5 = new HashMap();
 		HashMap probs4 = new HashMap();
 		Map<Double, Integer> diff = new TreeMap<Double, Integer>();
@@ -250,7 +253,7 @@ class Main{
 		
 	}
 
-	public static void intervaloDeConfianca(List a, List b) {
+	public static void intervaloDeConfianca() {
 		HashMap probs5 = new HashMap();
 		HashMap probs4 = new HashMap();
 		Map<Double, Integer> diff = new TreeMap<Double, Integer>();
@@ -370,8 +373,8 @@ class Main{
 	// Métodos funcionais
 	
     public static void main (String[] args) throws FileNotFoundException{       
-		List<Double> a = new ArrayList<Double>(); // Parâmetro de discriminação
-        List<Double> b = new ArrayList<Double>(); // Parâmetro de dificuldade
+		//List<Double> a = new ArrayList<Double>(); // Parâmetro de discriminação
+        //List<Double> b = new ArrayList<Double>(); // Parâmetro de dificuldade
 		
 		// Lendo o arquivo de questões e preenchendo lista de parâmetros
 		Scanner s = new Scanner(new File("questoes.txt"));
@@ -388,8 +391,11 @@ class Main{
 		// Fim da leitura
 		
 		// Métodos
-		melhorAluno(a, b); // I
-		melhorProva(a, b); // II
-		intervaloDeConfianca(a, b); // III
+		System.out.println("Calculando melhor aluno...");
+		melhorAluno(); // I
+		System.out.println("Calculando melhor prova...");
+		melhorProva(); // II
+		System.out.println("Calculando intervalo de confiança...");
+		intervaloDeConfianca(); // III
     }
 }

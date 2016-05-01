@@ -1,40 +1,30 @@
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.math.BigDecimal;
-import java.util.Random;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
+import java.io.*;
+import java.util.*;
+import java.math.*;
 
 class Main{
 	
-	private static void writeFile(String fileName, List<String[]> data) {
-		Iterator<String[]> it = data.iterator();
+	public static final double[] theta = {-1.0, -0.5, 0.0, 0.5, 1.0};
+	
+	public static final int N = 1000000;
+	
+	// Métodos auxiliares
+	private static void escreveArquivo(String arquivo, List<String[]> dados) {
+		Iterator<String[]> it = dados.iterator();
 		String[] dt;
-		String line;
+		String linha;
 
-		try(FileWriter fw = new FileWriter(fileName, false);
+		try(FileWriter fw = new FileWriter(arquivo, false);
 			BufferedWriter bw = new BufferedWriter(fw);
 			PrintWriter out = new PrintWriter(bw))
 		{
 			while(it.hasNext()) {
 				dt = it.next();
-				line = "";			
+				linha = "";			
 				for(String d : dt) {
-					line += d + " ";
+					linha += d + " ";
 				}
-				out.println(line);
+				out.println(linha);
 			}
 		} catch (IOException e) {
 			System.err.println(e.getMessage());
@@ -53,10 +43,11 @@ class Main{
 		if(aux <= prob) return true;
 		else return false;
 	}
+	// Métodos auxiliares
 	
+	// Métodos funcionais
 	public static void melhorAluno(List a, List b){
-		double[] theta = {-1.0, -0.5, 0.0, 0.5, 1.0};
-		
+				
 		Integer[] arr = new Integer[100];
 		for (int i = 0; i < arr.length; i++) {
 			arr[i] = i;
@@ -80,8 +71,6 @@ class Main{
 		double[] prob20 = new double[4];
 		double[] prob50 = new double[4];
 		double[] prob100 = new double[4];
-		
-		int N = 10;
 		
 		for(int i = 0; i < N; i++){
 			// Para N = 10 //
@@ -145,7 +134,7 @@ class Main{
 		probList.add(Arrays.toString(prob50).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob100).split("[\\[\\]]")[1].split(", "));
 
-		writeFile("I1.txt", probList);
+		escreveArquivo("I1.txt", probList);
 
 		System.out.println("5 em relacao a 4, 3, 2 e 1 para "+N+" interacoes:");
 		for (int teste = 0; teste < 4; teste++){
@@ -180,8 +169,6 @@ class Main{
 		Integer p50V[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), 0, 49);
 		Double p50K[] = Arrays.copyOfRange(diff.keySet().toArray(new Double[100]), 0, 49);
 
-		double[] theta = {-1.0, -0.5, 0.0, 0.5, 1.0};
-
 		int[] acertos10 = new int[5];
 		int[] acertos20 = new int[5];
 		int[] acertos50 = new int[5];
@@ -189,8 +176,6 @@ class Main{
 		double[] prob10 = new double[4];
 		double[] prob20 = new double[4];
 		double[] prob50 = new double[4];
-		
-		int N = 10;
 		
 		for(int i = 0; i < N; i++){
 			// Para N = 10 //
@@ -252,7 +237,7 @@ class Main{
 		probList.add(Arrays.toString(p50V).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob50).split("[\\[\\]]")[1].split(", "));
 
-		writeFile("I2.txt", probList);
+		escreveArquivo("I2.txt", probList);
 
 		System.out.println("5 em relacao a 4, 3, 2 e 1 para "+N+" interacoes na melhor prova:");
 		for (int teste = 0; teste < 4; teste++){
@@ -284,8 +269,6 @@ class Main{
 		Integer p50V[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), 0, 49);
 		Integer p100V[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), 0, 99);
 		
-		double[] theta = {-1.0, -0.5, 0.0, 0.5, 1.0};
-		int N = 100;
 		
 		int[][] notas10  = new int[5][N];
 		int[][] notas20  = new int[5][N];
@@ -381,29 +364,32 @@ class Main{
 		probList.add(Arrays.toString(intervalo50).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(intervalo100).split("[\\[\\]]")[1].split(", "));
 		
-		writeFile("I3.txt", probList);
+		escreveArquivo("I3.txt", probList);
 		
 	}
+	// Métodos funcionais
 	
     public static void main (String[] args) throws FileNotFoundException{       
 		List<Double> a = new ArrayList<Double>(); // Parâmetro de discriminação
         List<Double> b = new ArrayList<Double>(); // Parâmetro de dificuldade
+		
+		// Lendo o arquivo de questões e preenchendo lista de parâmetros
 		Scanner s = new Scanner(new File("questoes.txt"));
 		int cont = 0;
 		while(s.hasNext()) {
 			cont++;
 			BigDecimal bd = new BigDecimal(s.next());
-			//System.out.println(bd);
 			double val = bd.doubleValue();
-			//System.out.println(val);
 			if(cont%2 == 0){
 				b.add(val);
 			} else a.add(val);
 		}
 		s.close();
-				
-		melhorAluno(a, b);
-		melhorProva(a, b);
-		intervaloDeConfianca(a, b);
+		// Fim da leitura
+		
+		// Métodos
+		melhorAluno(a, b); // I
+		melhorProva(a, b); // II
+		intervaloDeConfianca(a, b); // III
     }
 }

@@ -6,12 +6,13 @@ class Main{
 	
 	public static final double[] theta = {-1.0, -0.5, 0.0, 0.5, 1.0};
 	
-	public static final int N = 1000000;
+	public static final int N = 1000; // Numero de repetições
 	
 	public static List<Double> a = new ArrayList<Double>(); // Parâmetro de discriminação
     public static List<Double> b = new ArrayList<Double>(); // Parâmetro de dificuldade
 	
 	// Métodos auxiliares
+	// Escrever arquivos
 	private static void escreveArquivo(String arquivo, List<String[]> dados) {
 		Iterator<String[]> it = dados.iterator();
 		String[] dt;
@@ -34,28 +35,42 @@ class Main{
 		}
 	}
 
+	// Calcula a probabilidade
 	public static double prob(double theta, double a, double b){
 		double aux = Math.pow(Math.E, a*(theta-b));
 		return aux/(1+aux);
 	}
-	
+
+	// Ve se acertou a questão
 	public static boolean acertou(double theta, double a, double b){
 		double prob = prob(theta, a, b);
 		double aux = Math.random();
-		//System.out.println(aux +" , "+ prob);
 		if(aux <= prob) return true;
 		else return false;
+	}
+	
+	// Ve que nota (quantidade de questões acertadas) o aluno tirou
+	public static int nota(Integer[] prova, double theta){
+		
+		int cont = 0;
+		for (int i : prova){
+			if (acertou(theta, (double)a.get(i), (double)b.get(i))) cont++;
+		}
+		return cont;
+		
 	}
 	// Métodos auxiliares
 	
 	// Métodos funcionais
 	public static void melhorAluno(){
-				
+			
+		// Array com as 100 questões
 		Integer[] arr = new Integer[100];
 		for (int i = 0; i < arr.length; i++) {
 			arr[i] = i;
 		}
-
+		
+		// Cria 4 provas aleatórias de 10, 20, 50 e 100 questões
 		Collections.shuffle(Arrays.asList(arr));		
 		Integer p10[] = Arrays.copyOfRange(arr, 0, 9);
 		Collections.shuffle(Arrays.asList(arr));
@@ -65,66 +80,23 @@ class Main{
 		Collections.shuffle(Arrays.asList(arr));
 		Integer p100[] = Arrays.copyOfRange(arr, 0, 99);
 
-		int[] acertos10 = new int[5];
-		int[] acertos20 = new int[5];
-		int[] acertos50 = new int[5];
-		int[] acertos100 = new int[5];
-		
+		// Array para calculo das probabilidades
 		double[] prob10 = new double[4];
 		double[] prob20 = new double[4];
 		double[] prob50 = new double[4];
 		double[] prob100 = new double[4];
 		
+		// Para um numero consideravel de vezes, ve se o aluno "t"[0 a 3] for melhor que o aluno 5[4]
 		for(int i = 0; i < N; i++){
-			// Para N = 10 //
-			for (int j : p10){
-				for (int th = 0; th < 5; th++){
-					if(acertou(theta[th], (double)a.get(j), (double)b.get(j))) acertos10[th]++;
-				}
-			}
 			for (int t = 0; t < 4; t++){
-				if(acertos10[4] < acertos10[t]) prob10[t]++;
-				acertos10[t] = 0;
-			} acertos10[4] = 0;
-			// Para N = 10 //
-			// Para N = 20 //
-			for (int j : p20){
-				for (int th = 0; th < 5; th++){
-					if(acertou(theta[th], (double)a.get(j), (double)b.get(j))) acertos20[th]++;
-				}
+				if(nota(p10, theta[4]) < nota(p10, theta[t])) prob10[t]++;
+				if(nota(p20, theta[4]) < nota(p20, theta[t])) prob20[t]++;
+				if(nota(p50, theta[4]) < nota(p50, theta[t])) prob50[t]++;
+				if(nota(p100, theta[4]) < nota(p100, theta[t])) prob100[t]++;
 			}
-			for (int t = 0; t < 4; t++){
-				if(acertos20[4] < acertos20[t]) prob20[t]++;
-				acertos20[t] = 0;
-			} acertos20[4] = 0;
-			// Para N = 20 //
-			// Para N = 50 //
-			for (int j : p50){
-				for (int th = 0; th < 5; th++){
-					if(acertou(theta[th], (double)a.get(j), (double)b.get(j))) acertos50[th]++;
-				}
-			}
-			for (int t = 0; t < 4; t++){
-				if(acertos50[4] < acertos50[t]) prob50[t]++;
-				acertos50[t] = 0;
-			} acertos50[4] = 0;
-			// Para N = 50 //
-			// Para N = 100 //
-			for (int j : p100){
-				for (int th = 0; th < 5; th++){
-					if(acertou(theta[th], (double)a.get(j), (double)b.get(j))) acertos100[th]++;
-				}
-			}
-			for (int t = 0; t < 4; t++){
-				if(acertos100[4] < acertos100[t]) prob100[t]++;
-				acertos100[t] = 0;
-			} acertos100[4] = 0;
-			// Para N = 100 //
-			
 		}
-
-		List<String[]> probList = new ArrayList<String[]>();
-		
+				
+		// Calcula as probabilidades: (Total de provas - Quantas provas for melhor) / Total de provas
 		for (int teste = 0; teste < 4; teste++){
 			prob10[teste] = (N-prob10[teste])/N; 
 			prob20[teste] = (N-prob20[teste])/N; 
@@ -132,125 +104,94 @@ class Main{
 			prob100[teste] = (N-prob100[teste])/N;
 		}		
 		
+		// Escreve resposta no arquivo
+		List<String[]> probList = new ArrayList<String[]>();
 		probList.add(Arrays.toString(prob10).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob20).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob50).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob100).split("[\\[\\]]")[1].split(", "));
-
 		escreveArquivo("I1.txt", probList);
 
 		System.out.println("5 em relacao a 4, 3, 2 e 1 para "+N+" interacoes:");
-		for (int teste = 0; teste < 4; teste++){
-			System.out.println(	prob10[teste] +", "+ 
-								prob20[teste] +", "+ 
-								prob50[teste] +", "+
-								prob100[teste]);
-		}
+		System.out.println("Linha -> Prova[10, 20, 50, 100] / Coluna -> Aluno[1, 2, 3, 4]");
+		System.out.println(prob10[0] + " , " + prob10[1] + " , " + prob10[2] + " , " + prob10[3]);
+		System.out.println(prob20[0] + " , " + prob20[1] + " , " + prob20[2] + " , " + prob20[3]);
+		System.out.println(prob50[0] + " , " + prob50[1] + " , " + prob50[2] + " , " + prob50[3]);
+		System.out.println(prob100[0] + " , " + prob100[1] + " , " + prob100[2] + " , " + prob100[3]);
 		
 	}
 	
 	public static void melhorProva(){
+		
+		// Probabilidade de acertos do aluno 5 e 4
 		HashMap probs5 = new HashMap();
 		HashMap probs4 = new HashMap();
-		Map<Double, Integer> diff = new TreeMap<Double, Integer>();
+		
+		Map<Double, Integer> diff = new TreeMap<Double, Integer>(); // Tree map manter ordenado pelo valor da diferença
 	
+		// Cria um mapa com a probabilidade de acerto para cada questão para o aluno 5 e 4
 		for (int i = 0; i < a.size(); i++){
 			probs5.put(i, prob(1, (double)a.get(i), (double)b.get(i)));
 			probs4.put(i, prob(0.5, (double)a.get(i), (double)b.get(i)));
 		}
-		
+
+		// Calcula a diferença entre as probabilidades
 		for (int i = 0; i < probs5.size(); i++){
 			diff.put((double)probs5.get(i)-(double)probs4.get(i), i);
 		}
+/*
+		for (Map.Entry<Double, Integer> entry : diff.entrySet()) {
+			System.out.println("Key: " + entry.getKey() + ". Value: " + entry.getValue());
+		}
+*/		
+		// Seleciona as 10, 20 e 50 primeiras questões (maiores diferenças)
+		Integer p10V[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), 90, 99);
+		Integer p20V[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), 80, 99);
+		Integer p50V[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), 50, 99);
 
-		Integer p10V[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), 0, 9);
-		Double p10K[] = Arrays.copyOfRange(diff.keySet().toArray(new Double[100]), 0, 9);
-
-		Integer p20V[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), 0, 19);
-		Double p20K[] = Arrays.copyOfRange(diff.keySet().toArray(new Double[100]), 0, 19);
-
-		Integer p50V[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), 0, 49);
-		Double p50K[] = Arrays.copyOfRange(diff.keySet().toArray(new Double[100]), 0, 49);
-
-		int[] acertos10 = new int[5];
-		int[] acertos20 = new int[5];
-		int[] acertos50 = new int[5];
-		
+		// Array para probabilidades
 		double[] prob10 = new double[4];
 		double[] prob20 = new double[4];
 		double[] prob50 = new double[4];
 		
+		// Para um numero consideravel de vezes, ve se o aluno "t"[0 a 3] for melhor que o aluno 5[4]
 		for(int i = 0; i < N; i++){
-			// Para N = 10 //
-			for (int j : p10V){
-				for (int th = 0; th < 5; th++){
-					if(acertou(theta[th], (double)a.get(j), (double)b.get(j))) acertos10[th]++;
-				}
-			}
 			for (int t = 0; t < 4; t++){
-				if(acertos10[4] < acertos10[t]) prob10[t]++;
-				acertos10[t] = 0;
-			} acertos10[4] = 0;
-			// Para N = 10 //
-			// Para N = 20 //
-			for (int j : p20V){
-				for (int th = 0; th < 5; th++){
-					if(acertou(theta[th], (double)a.get(j), (double)b.get(j))) acertos20[th]++;
-				}
+				if(nota(p10V, theta[4]) < nota(p10V, theta[t])) prob10[t]++;
+				if(nota(p20V, theta[4]) < nota(p20V, theta[t])) prob20[t]++;
+				if(nota(p50V, theta[4]) < nota(p50V, theta[t])) prob50[t]++;
 			}
-			for (int t = 0; t < 4; t++){
-				if(acertos20[4] < acertos20[t]) prob20[t]++;
-				acertos20[t] = 0;
-			} acertos20[4] = 0;
-			// Para N = 20 //
-			// Para N = 50 //
-			for (int j : p50V){
-				for (int th = 0; th < 5; th++){
-					if(acertou(theta[th], (double)a.get(j), (double)b.get(j))) acertos50[th]++;
-				}
-			}
-			for (int t = 0; t < 4; t++){
-				if(acertos50[4] < acertos50[t]) prob50[t]++;
-				acertos50[t] = 0;
-			} acertos50[4] = 0;
-			// Para N = 50 //
 		}
 
-		List<String[]> probList = new ArrayList<String[]>();
-		
+		// Calcula as probabilidades
 		for (int teste = 0; teste < 4; teste++){
 			prob10[teste] = (N-prob10[teste])/N; 
 			prob20[teste] = (N-prob20[teste])/N; 
 			prob50[teste] = (N-prob50[teste])/N;
 		}
 
-		for(int i = 0; i < p10V.length; i++)
-			p10V[i]++;
+		// Arruma o numero da questão (de 0-99 para 1-100)
+		for(int i = 0; i < p10V.length; i++) p10V[i]++;
+		for(int i = 0; i < p20V.length; i++) p20V[i]++;
+		for(int i = 0; i < p50V.length; i++) p50V[i]++;
 
-		for(int i = 0; i < p20V.length; i++)
-			p20V[i]++;
-
-		for(int i = 0; i < p50V.length; i++)
-			p50V[i]++;
-
+		// Escreve o arquivo
+		List<String[]> probList = new ArrayList<String[]>();
 		probList.add(Arrays.toString(p10V).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob10).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(p20V).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob20).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(p50V).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob50).split("[\\[\\]]")[1].split(", "));
-
 		escreveArquivo("I2.txt", probList);
-
-		System.out.println("5 em relacao a 4, 3, 2 e 1 para "+N+" interacoes na melhor prova:");
-		for (int teste = 0; teste < 4; teste++){
-			System.out.println(	prob10[teste] +", "+ 
-								prob20[teste] +", "+ 
-								prob50[teste]);
-		}
-
-		//System.out.println(diff);
 		
+		
+		System.out.println("5 em relacao a 4, 3, 2 e 1 para "+N+" interacoes na melhor prova:");
+		System.out.println("Linha -> Prova[10, 20, 50] / Coluna -> Aluno[1, 2, 3, 4]");
+		System.out.println(prob10[0] + " , " + prob10[1] + " , " + prob10[2] + " , " + prob10[3]);
+		System.out.println(prob20[0] + " , " + prob20[1] + " , " + prob20[2] + " , " + prob20[3]);
+		System.out.println(prob50[0] + " , " + prob50[1] + " , " + prob50[2] + " , " + prob50[3]);
+	
 	}
 
 	public static void intervaloDeConfianca() {
@@ -318,14 +259,11 @@ class Main{
 		
 		// Calcula o intervalo de confiança
 		
-		double alpha = 0.1;
-		
-		
+		double alpha = 0.1;		
 		
 		int limiteInferior = (int)Math.ceil(N*(alpha/2));
 		int limiteSuperior = (int)Math.floor(N-(N*(alpha/2)));
-		System.out.println(limiteInferior + " , " + limiteSuperior);
-		
+				
 		// Array com as notas somente no intervalo (desnesessário)
 		/*
 		int[][] intervalo10  = new int[5][N];
@@ -391,11 +329,15 @@ class Main{
 		// Fim da leitura
 		
 		// Métodos
+		System.out.println("**********************************************************************");
 		System.out.println("Calculando melhor aluno...");
 		melhorAluno(); // I
+		System.out.println("**********************************************************************");
 		System.out.println("Calculando melhor prova...");
 		melhorProva(); // II
-		System.out.println("Calculando intervalo de confiança...");
+		System.out.println("**********************************************************************");
+		System.out.println("Calculando intervalo de confianca...");
 		intervaloDeConfianca(); // III
+		System.out.println("**********************************************************************");
     }
 }

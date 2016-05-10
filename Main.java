@@ -3,14 +3,14 @@ import java.util.*;
 import java.math.*;
 
 class Main{
-	
+
 	public static final double[] theta = {-1.0, -0.5, 0.0, 0.5, 1.0}; // Theta dos alunos 1 ao 5
-	
+
 	public static int N; // Numero de repetições
-	
+
 	public static List<Double> a = new ArrayList<Double>(); // Parâmetro de discriminação
-    public static List<Double> b = new ArrayList<Double>(); // Parâmetro de dificuldade
-	
+  public static List<Double> b = new ArrayList<Double>(); // Parâmetro de dificuldade
+
 	// Métodos auxiliares
 	// Escrever arquivos
 	private static void escreveArquivo(String arquivo, List<String[]> dados) {
@@ -24,7 +24,7 @@ class Main{
 		{
 			while(it.hasNext()) {
 				dt = it.next();
-				linha = "";			
+				linha = "";
 				for(String d : dt) {
 					linha += d + " ";
 				}
@@ -48,36 +48,36 @@ class Main{
 		if(aux <= prob) return true;
 		else return false;
 	}
-	
+
 	// Ve que nota (quantidade de questões acertadas) o aluno tirou
 	public static int nota(Integer[] prova, double theta){
-		
+
 		int cont = 0;
 		for (int i : prova){
 			if (acertou(theta, (double)a.get(i), (double)b.get(i))) cont++;
 		}
 		return cont;
-		
+
 	}
-	
+
 	// Retorna melhor prova para o aluno "x" ser melhor que o aluno "y"
 	public static Integer[] prova(int quant, double thX, double thY){
 
 		// Quantidade máxima de questões é 100
 		if (quant > 100) return new Integer[0];
-	
+
 		HashMap probsX = new HashMap(); // Probabilidades de x acertar as questões
 		HashMap probsY = new HashMap(); // Probabilidades de y acertar as questões
-		
+
 		// Mapa com diferença das probabilidades (TreeMap ordena automaticamente)
 		Map<Double, Integer> diff = new TreeMap<Double, Integer>();
-	
+
 		// Calcula as probabilidades e coloca nos mapas
 		for (int i = 0; i < a.size(); i++){
 			probsX.put(i, prob(thX, (double)a.get(i), (double)b.get(i)));
 			probsY.put(i, prob(thY, (double)a.get(i), (double)b.get(i)));
 		}
-		
+
 		// Calcula a diferença de probabilidades e coloca no TreeMap (Já ordena)
 		for (int i = 0; i < probsX.size(); i++){
 			diff.put((double)probsX.get(i)-(double)probsY.get(i), i);
@@ -85,23 +85,23 @@ class Main{
 
 		// Encontra a prova com "quant" quantidade de questões (max: 100)
 		Integer aux[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), (100-quant), 99);
-		
+
 		return aux;
 
-	}	
+	}
 	// Métodos auxiliares
-	
+
 	// Métodos funcionais
 	public static void melhorAluno(){
-			
+
 		// Array com as 100 questões
 		Integer[] arr = new Integer[100];
 		for (int i = 0; i < arr.length; i++) {
 			arr[i] = i;
 		}
-		
+
 		// Cria 4 provas aleatórias de 10, 20, 50 e 100 questões
-		Collections.shuffle(Arrays.asList(arr));		
+		Collections.shuffle(Arrays.asList(arr));
 		Integer p10[] = Arrays.copyOfRange(arr, 0, 9);
 		Collections.shuffle(Arrays.asList(arr));
 		Integer p20[] = Arrays.copyOfRange(arr, 0, 19);
@@ -115,7 +115,7 @@ class Main{
 		double[] prob20 = new double[4];
 		double[] prob50 = new double[4];
 		double[] prob100 = new double[4];
-		
+
 		// Para um numero consideravel de vezes, ve se o aluno "t"[0 a 3] for melhor que o aluno 5[4]
 		for(int i = 0; i < N; i++){
 			for (int t = 0; t < 4; t++){
@@ -125,15 +125,15 @@ class Main{
 				if(nota(p100, theta[4]) < nota(p100, theta[t])) prob100[t]++;
 			}
 		}
-				
+
 		// Calcula as probabilidades: (Total de provas - Quantas provas for melhor) / Total de provas
 		for (int teste = 0; teste < 4; teste++){
-			prob10[teste] = (N-prob10[teste])/N; 
-			prob20[teste] = (N-prob20[teste])/N; 
+			prob10[teste] = (N-prob10[teste])/N;
+			prob20[teste] = (N-prob20[teste])/N;
 			prob50[teste] = (N-prob50[teste])/N;
 			prob100[teste] = (N-prob100[teste])/N;
-		}		
-		
+		}
+
 		// Escreve resposta no arquivo
 		List<String[]> probList = new ArrayList<String[]>();
 		probList.add(Arrays.toString(prob10).split("[\\[\\]]")[1].split(", "));
@@ -149,21 +149,21 @@ class Main{
 		System.out.println(prob20[0] + " , " + prob20[1] + " , " + prob20[2] + " , " + prob20[3]);
 		System.out.println(prob50[0] + " , " + prob50[1] + " , " + prob50[2] + " , " + prob50[3]);
 		System.out.println(prob100[0] + " , " + prob100[1] + " , " + prob100[2] + " , " + prob100[3]);
-		
+
 	}
-	
+
 	public static void melhorProva(){
-		
+
 		// Seleciona a prova de "x" questões onde o aluno "a" é melhor que o "b"
 		Integer p10V[] = prova(10, theta[4], theta[3]);
 		Integer p20V[] = prova(20, theta[4], theta[3]);
 		Integer p50V[] = prova(50, theta[4], theta[3]);
-		
+
 		// Array para probabilidades
 		double[] prob10 = new double[4];
 		double[] prob20 = new double[4];
 		double[] prob50 = new double[4];
-		
+
 		// Para um numero consideravel de vezes, ve se o aluno "t"[0 a 3] for melhor que o aluno 5[4]
 		for(int i = 0; i < N; i++){
 			for (int t = 0; t < 4; t++){
@@ -175,8 +175,8 @@ class Main{
 
 		// Calcula as probabilidades
 		for (int teste = 0; teste < 4; teste++){
-			prob10[teste] = (N-prob10[teste])/N; 
-			prob20[teste] = (N-prob20[teste])/N; 
+			prob10[teste] = (N-prob10[teste])/N;
+			prob20[teste] = (N-prob20[teste])/N;
 			prob50[teste] = (N-prob50[teste])/N;
 		}
 
@@ -194,19 +194,19 @@ class Main{
 		probList.add(Arrays.toString(p50V).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob50).split("[\\[\\]]")[1].split(", "));
 		escreveArquivo("I2.txt", probList);
-		
-		
+
+
 		System.out.println("5 em relacao a 4, 3, 2 e 1 para "+N+" interacoes na melhor prova:");
 		System.out.println("Linha -> Prova[10, 20, 50]");
 		System.out.println("Coluna -> Aluno[1, 2, 3, 4]");
 		System.out.println(prob10[0] + " , " + prob10[1] + " , " + prob10[2] + " , " + prob10[3]);
 		System.out.println(prob20[0] + " , " + prob20[1] + " , " + prob20[2] + " , " + prob20[3]);
 		System.out.println(prob50[0] + " , " + prob50[1] + " , " + prob50[2] + " , " + prob50[3]);
-	
+
 	}
 
 	public static void intervaloDeConfianca() {
-		
+
 		/*** Mesmo procedimento de melhor prova ***/
 		// Seleciona a prova de "x" questões onde o aluno "a" é melhor que o "b"
 		Integer p10V[] = prova(10, theta[4], theta[3]);
@@ -214,12 +214,12 @@ class Main{
 		Integer p50V[] = prova(50, theta[4], theta[3]);
 		Integer p100V[] = prova(100, theta[4], theta[3]);
 		/*** Mesmo procedimento de melhor prova ***/
-		
+
 		int[][] notas10  = new int[5][N];
 		int[][] notas20  = new int[5][N];
 		int[][] notas50  = new int[5][N];
 		int[][] notas100 = new int[5][N];
-		
+
 		// Para um numero consideravel de vezes, adiciona notas para cada aluno em cada prova
 		for(int i = 0; i < N; i++){
 			for (int t = 0; t < 5; t++){
@@ -229,7 +229,7 @@ class Main{
 				notas100[t][i] = nota(p100V, theta[t]);
 			}
 		}
-		
+
 		// Ordena as notas
 		for (int i = 0; i < 5; i++){
 			Arrays.sort(notas10[i]);
@@ -237,50 +237,50 @@ class Main{
 			Arrays.sort(notas50[i]);
 			Arrays.sort(notas100[i]);
 		}
-		
+
 
 		// Calcula o intervalo de confiança
-		double alpha = 0.1;		
-		
+		double alpha = 0.1;
+
 		int limiteInferior = (int)Math.ceil(N*(alpha/2));
 		int limiteSuperior = (int)Math.floor(N-(N*(alpha/2)));
-				
+
 		// Array com as notas somente no intervalo (desnesessário)
 		/*
 		int[][] intervalo10  = new int[5][N];
 		int[][] intervalo20  = new int[5][N];
 		int[][] intervalo50  = new int[5][N];
 		int[][] intervalo100 = new int[5][N];
-		
-		for (int i = 0; i < 5; i++){			
+
+		for (int i = 0; i < 5; i++){
 			intervalo10[i] = Arrays.copyOfRange(notas10[i], limiteInferior, limiteSuperior);
 			intervalo20[i] = Arrays.copyOfRange(notas20[i], limiteInferior, limiteSuperior);
 			intervalo50[i] = Arrays.copyOfRange(notas50[i], limiteInferior, limiteSuperior);
 			intervalo100[i] = Arrays.copyOfRange(notas100[i], limiteInferior, limiteSuperior);
 		}
 		*/
-		
+
 		// Acha os valores dos limites para cada prova e para cada aluno
 		int[] intervalo10 = new int[10];
 		int[] intervalo20 = new int[10];
 		int[] intervalo50 = new int[10];
 		int[] intervalo100 = new int[10];
-		
+
 		for(int i = 0; i < 9; i=i+2){
 			intervalo10[i]   = notas10[i/2][limiteInferior];
 			intervalo10[i+1] = notas10[i/2][limiteSuperior];
-			
+
 			intervalo20[i]   = notas20[i/2][limiteInferior];
 			intervalo20[i+1] = notas20[i/2][limiteSuperior];
-			
+
 			intervalo50[i]   = notas50[i/2][limiteInferior];
 			intervalo50[i+1] = notas50[i/2][limiteSuperior];
-			
+
 			intervalo100[i]   = notas100[i/2][limiteInferior];
 			intervalo100[i+1] = notas100[i/2][limiteSuperior];
 		}
 		// Fim do calculo
-				
+
 		// Escreve o arquivo
 		List<String[]> probList = new ArrayList<String[]>();
 		probList.add(Arrays.toString(intervalo10).split("[\\[\\]]")[1].split(", "));
@@ -288,7 +288,7 @@ class Main{
 		probList.add(Arrays.toString(intervalo50).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(intervalo100).split("[\\[\\]]")[1].split(", "));
 		escreveArquivo("I3.txt", probList);
-		
+
 		System.out.println("Limite de confianca em provas de 10, 20, 50 e 100 questoes para os 5 alunos:");
 		System.out.println("Linha -> Prova[10, 20, 50, 100]");
 		System.out.println("Coluna -> Aluno[1(Inf-Sup), 2(Inf-Sup), 3(Inf-Sup), 4(Inf-Sup), 5(Inf-Sup)]");
@@ -296,12 +296,12 @@ class Main{
 		System.out.println(intervalo20[0] + " - " + intervalo20[1] + " , " + intervalo20[2] + " - " + intervalo20[3] + " , " + intervalo20[4] + " - " + intervalo20[5] + " , " + intervalo20[6] + " - " + intervalo20[7] + " , " + intervalo20[8] + " - " + intervalo20[9]);
 		System.out.println(intervalo50[0] + " - " + intervalo50[1] + " , " + intervalo50[2] + " - " + intervalo50[3] + " , " + intervalo50[4] + " - " + intervalo50[5] + " , " + intervalo50[6] + " - " + intervalo50[7] + " , " + intervalo50[8] + " - " + intervalo50[9]);
 		System.out.println(intervalo100[0] + " - " + intervalo100[1] + " , " + intervalo100[2] + " - " + intervalo100[3] + " , " + intervalo100[4] + " - " + intervalo100[5] + " , " + intervalo100[6] + " - " + intervalo100[7] + " , " + intervalo100[8] + " - " + intervalo100[9]);
-		
+
 	}
 	// Métodos funcionais
-	
-    public static void main (String[] args) throws FileNotFoundException{       
-		
+
+    public static void main (String[] args) throws FileNotFoundException{
+
 		// Lendo o arquivo de questões e preenchendo lista de parâmetros
 		Scanner s = new Scanner(new File("questoes.txt"));
 		int cont = 0;
@@ -315,9 +315,10 @@ class Main{
 		}
 		s.close();
 		// Fim da leitura
-		
-		N = Integer.parseInt(args[0]);
-				
+
+		if(args.length == 0) N = 10;
+		else N = Integer.parseInt(args[0]);
+
 		// Métodos
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando melhor aluno...");
@@ -329,6 +330,6 @@ class Main{
 		System.out.println("Calculando intervalo de confianca...");
 		intervaloDeConfianca(); // III
 		System.out.println("**********************************************************************");
-		
+
     }
 }

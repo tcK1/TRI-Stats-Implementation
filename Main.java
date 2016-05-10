@@ -11,6 +11,9 @@ class Main{
 	public static List<Double> a = new ArrayList<Double>(); // Parâmetro de discriminação
   public static List<Double> b = new ArrayList<Double>(); // Parâmetro de dificuldade
 
+	public static int[][] respostas = new int[2000][100];
+
+
 	// Métodos auxiliares
 	// Escrever arquivos
 	private static void escreveArquivo(String arquivo, List<String[]> dados) {
@@ -300,7 +303,7 @@ class Main{
 	}
 	// Métodos funcionais
 
-    public static void main (String[] args) throws FileNotFoundException{
+  public static void main (String[] args) throws FileNotFoundException{
 
 		// Lendo o arquivo de questões e preenchendo lista de parâmetros
 		Scanner s = new Scanner(new File("questoes.txt"));
@@ -319,7 +322,7 @@ class Main{
 		if(args.length == 0) N = 10;
 		else N = Integer.parseInt(args[0]);
 
-		// Métodos
+		// Chamada de Métodos da primeira parte
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando melhor aluno...");
 		melhorAluno(); // I
@@ -331,5 +334,25 @@ class Main{
 		intervaloDeConfianca(); // III
 		System.out.println("**********************************************************************");
 
-    }
+		// Lendo o arquivo de respostas e populando array bidimensional com os acertos/erros
+		Scanner s2 = new Scanner(new File("respostas.txt"));
+		int aluno = 0;
+		int resposta = 0;
+		while(s2.hasNext()) {
+			if (resposta == 100) break;
+			BigDecimal bd = new BigDecimal(s2.next());;
+			int val = bd.intValue();
+			respostas[aluno][resposta] = val;
+			aluno++;
+			if(aluno == 2000){
+				aluno = 0;
+				resposta++;
+			}
+		}
+		s2.close();
+		// Fim da leitura
+
+		System.out.println(respostas[1999][99]);
+
+  }
 }

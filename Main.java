@@ -118,13 +118,18 @@ class Main{
 		double[] prob50 = new double[4];
 		double[] prob100 = new double[4];
 
+		int notaP10 = nota(p10, theta[4]);
+		int notaP20 = nota(p20, theta[4]);
+		int notaP50 = nota(p50, theta[4]);
+		int notaP100 = nota(p100, theta[4]);
+
 		// Para um numero consideravel de vezes, ve se o aluno "t"[0 a 3] for melhor que o aluno 5[4]
 		for(int i = 0; i < N; i++){
 			for (int t = 0; t < 4; t++){
-				if(nota(p10, theta[4]) < nota(p10, theta[t])) prob10[t]++;
-				if(nota(p20, theta[4]) < nota(p20, theta[t])) prob20[t]++;
-				if(nota(p50, theta[4]) < nota(p50, theta[t])) prob50[t]++;
-				if(nota(p100, theta[4]) < nota(p100, theta[t])) prob100[t]++;
+				if(notaP10 < nota(p10, theta[t])) prob10[t]++;
+				if(notaP20 < nota(p20, theta[t])) prob20[t]++;
+				if(notaP50 < nota(p50, theta[t])) prob50[t]++;
+				if(notaP100 < nota(p100, theta[t])) prob100[t]++;
 			}
 		}
 
@@ -166,12 +171,16 @@ class Main{
 		double[] prob20 = new double[4];
 		double[] prob50 = new double[4];
 
+		int notaP10V = nota(p10V, theta[4]);
+		int notaP20V = nota(p20V, theta[4]);
+		int notaP50V = nota(p50V, theta[4]);
+
 		// Para um numero consideravel de vezes, ve se o aluno "t"[0 a 3] for melhor que o aluno 5[4]
 		for(int i = 0; i < N; i++){
 			for (int t = 0; t < 4; t++){
-				if(nota(p10V, theta[4]) < nota(p10V, theta[t])) prob10[t]++;
-				if(nota(p20V, theta[4]) < nota(p20V, theta[t])) prob20[t]++;
-				if(nota(p50V, theta[4]) < nota(p50V, theta[t])) prob50[t]++;
+				if(notaP10V < nota(p10V, theta[t])) prob10[t]++;
+				if(notaP20V < nota(p20V, theta[t])) prob20[t]++;
+				if(notaP50V < nota(p50V, theta[t])) prob50[t]++;
 			}
 		}
 

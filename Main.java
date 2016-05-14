@@ -13,7 +13,6 @@ class Main{
 
 	public static int[][] respostas = new int[2000][100];
 
-
 	// Métodos auxiliares
 	// Escrever arquivos
 	private static void escreveArquivo(String arquivo, List<String[]> dados) {
@@ -301,6 +300,23 @@ class Main{
 		System.out.println(intervalo100[0] + " - " + intervalo100[1] + " , " + intervalo100[2] + " - " + intervalo100[3] + " , " + intervalo100[4] + " - " + intervalo100[5] + " , " + intervalo100[6] + " - " + intervalo100[7] + " , " + intervalo100[8] + " - " + intervalo100[9]);
 
 	}
+
+	public static double bissecao (	){
+
+	}
+
+	public static void estimadorPontual (){
+
+
+
+		System.out.println(respostas.length);
+		System.out.println(respostas[0].length);
+
+		for (int i = 0; i < respostas.length; i++){
+
+		}
+
+	}
 	// Métodos funcionais
 
   public static void main (String[] args) throws FileNotFoundException{
@@ -340,7 +356,7 @@ class Main{
 		int resposta = 0;
 		while(s2.hasNext()) {
 			if (resposta == 100) break;
-			BigDecimal bd = new BigDecimal(s2.next());;
+			BigDecimal bd = new BigDecimal(s2.next());
 			int val = bd.intValue();
 			respostas[aluno][resposta] = val;
 			aluno++;
@@ -352,7 +368,18 @@ class Main{
 		s2.close();
 		// Fim da leitura
 
+		estimadorPontual();
+
 		System.out.println(respostas[1999][99]);
+
+		/*
+
+		http://www.derivative-calculator.net/#expr=log%28%28%28y%29%28%28e%5E%28a%28t-b%29%29%29%2F%28%28e%5E%28a%28t-b%29%29%29%20%2B%201%29%29%29%20%2B%20%28%281-y%29%28%281%29-%28%28e%5E%28a%28t-b%29%29%29%2F%28%28e%5E%28a%28t-b%29%29%20%20%2B%201%29%29%29%29%29%29&diffvar=t
+
+		a / (1 + Math.pow(Math.E, (a(th - b)))) -> 0
+
+
+		*/
 
   }
 }

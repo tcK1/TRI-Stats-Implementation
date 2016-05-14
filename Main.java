@@ -333,6 +333,8 @@ class Main{
 		System.out.println("Primeiro semestre de 2016");
 		System.out.println("**********************************************************************");
 
+		long inicio = System.nanoTime(); // Tempo incial de execução do programa
+
 		// Lendo o arquivo de questões e preenchendo lista de parâmetros
 		long tempo_inicial = System.nanoTime(); // Informações de duração dos calculos
 		Scanner s = new Scanner(new File("questoes.txt"));
@@ -417,6 +419,11 @@ class Main{
 		(a*(2y-1)*(Math.pow(Math.E, (a(t-b)))))/(((Math.pow(Math.E, (a(t-b))))+1)*((y*(Math.pow(Math.E, (a(t-b)))))-y+1))
 
 		*/
+
+		// Tempo final da execução do programa
+		diferenca = (System.nanoTime() - inicio)/1e6;
+		System.out.println("Duracao da execucao do programa: " + diferenca);
+
 
   }
 }

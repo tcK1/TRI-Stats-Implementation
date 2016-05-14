@@ -147,7 +147,7 @@ class Main{
 		probList.add(Arrays.toString(prob20).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob50).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob100).split("[\\[\\]]")[1].split(", "));
-		escreveArquivo("I1.txt", probList);
+		escreveArquivo("res/I1.txt", probList);
 
 		System.out.println("5 em relacao a 4, 3, 2 e 1 para "+N+" interacoes:");
 		System.out.println("Linha -> Prova[10, 20, 50, 100]");
@@ -204,7 +204,7 @@ class Main{
 		probList.add(Arrays.toString(prob20).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(p50V).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob50).split("[\\[\\]]")[1].split(", "));
-		escreveArquivo("I2.txt", probList);
+		escreveArquivo("res/I2.txt", probList);
 
 
 		System.out.println("5 em relacao a 4, 3, 2 e 1 para "+N+" interacoes na melhor prova:");
@@ -298,7 +298,7 @@ class Main{
 		probList.add(Arrays.toString(intervalo20).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(intervalo50).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(intervalo100).split("[\\[\\]]")[1].split(", "));
-		escreveArquivo("I3.txt", probList);
+		escreveArquivo("res/I3.txt", probList);
 
 		System.out.println("Limite de confianca em provas de 10, 20, 50 e 100 questoes para os 5 alunos:");
 		System.out.println("Linha -> Prova[10, 20, 50, 100]");

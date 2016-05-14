@@ -302,12 +302,10 @@ class Main{
 	}
 
 	public static double bissecao (	){
-
+		return -1;
 	}
 
 	public static void estimadorPontual (){
-
-
 
 		System.out.println(respostas.length);
 		System.out.println(respostas[0].length);
@@ -320,8 +318,14 @@ class Main{
 	// Métodos funcionais
 
   public static void main (String[] args) throws FileNotFoundException{
+		System.out.println("**********************************************************************");
+		System.out.println("Teoria de Resposta ao Item");
+		System.out.println("por Kaic Bastidas e Matheus Canon");
+		System.out.println("Primeiro semestre de 2016");
+		System.out.println("**********************************************************************");
 
 		// Lendo o arquivo de questões e preenchendo lista de parâmetros
+		long tempo_inicial = System.nanoTime(); // Informações de duração dos calculos
 		Scanner s = new Scanner(new File("questoes.txt"));
 		int cont = 0;
 		while(s.hasNext()) {
@@ -335,22 +339,40 @@ class Main{
 		s.close();
 		// Fim da leitura
 
+		double diferenca = (System.nanoTime() - tempo_inicial)/1e6;
+		System.out.println("Tempo de leitura do arquivo 'questoes.txt' em nanosegundos: " + diferenca);
+
+		// Le o parametro de quantas interações serão feitas para os calculos
 		if(args.length == 0) N = 10;
 		else N = Integer.parseInt(args[0]);
 
 		// Chamada de Métodos da primeira parte
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando melhor aluno...");
+		tempo_inicial = System.nanoTime();
 		melhorAluno(); // I
+		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
+		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
+
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando melhor prova...");
+		tempo_inicial = System.nanoTime();
 		melhorProva(); // II
+		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
+		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
+
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando intervalo de confianca...");
+		tempo_inicial = System.nanoTime();
 		intervaloDeConfianca(); // III
+		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
+		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
+
 		System.out.println("**********************************************************************");
 
+
 		// Lendo o arquivo de respostas e populando array bidimensional com os acertos/erros
+		tempo_inicial = System.nanoTime();
 		Scanner s2 = new Scanner(new File("respostas.txt"));
 		int aluno = 0;
 		int resposta = 0;
@@ -367,16 +389,21 @@ class Main{
 		}
 		s2.close();
 		// Fim da leitura
+		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
+		System.out.println("Tempo de leitura do arquivo 'respostas.txt' em nanosegundos: " + diferenca);
+
 
 		estimadorPontual();
 
 		System.out.println(respostas[1999][99]);
 
+
 		/*
 
 		http://www.derivative-calculator.net/#expr=log%28%28%28y%29%28%28e%5E%28a%28t-b%29%29%29%2F%28%28e%5E%28a%28t-b%29%29%29%20%2B%201%29%29%29%20%2B%20%28%281-y%29%28%281%29-%28%28e%5E%28a%28t-b%29%29%29%2F%28%28e%5E%28a%28t-b%29%29%20%20%2B%201%29%29%29%29%29%29&diffvar=t
 
-		a / (1 + Math.pow(Math.E, (a(th - b)))) -> 0
+		(a(2y-1)(e^(a(t-b))))/(((e^(a(t-b)))+1)((y(e^(a(t-b))))-y+1))
+
 
 
 		*/

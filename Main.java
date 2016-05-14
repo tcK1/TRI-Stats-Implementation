@@ -405,7 +405,7 @@ class Main{
 
 		(a(2y-1)(e^(a(t-b))))/(((e^(a(t-b)))+1)((y(e^(a(t-b))))-y+1))
 
-		(a*(2y-1)*(Math.pow(e^(a(t-b)))))/(((Math.pow(e^(a(t-b))))+1)*((y*(Math.pow(e^(a(t-b)))))-y+1))
+		(a*(2y-1)*(Math.pow(Math.E, (a(t-b)))))/(((Math.pow(Math.E, (a(t-b))))+1)*((y*(Math.pow(Math.E, (a(t-b)))))-y+1))
 
 		*/
 

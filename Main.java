@@ -310,8 +310,25 @@ class Main{
 
 	}
 
-	public static double bissecao (	){
-		return -1;
+	public static double bissecao (int al){
+		double t = 0;
+		double bis = 1;
+		double aux = 1;
+		for (int z = 0; z < 1000; z++) {
+			aux = 0;
+			for (int i = 0; i < a.size(); i++){
+				aux += (a.get(i)*(2*respostas[al][i]-1)*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))/(((Math.pow(Math.E, (a.get(i)*(t-b.get(i)))))+1)*((respostas[al][i]*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))-respostas[al][i]+1));
+			}
+			bis /= 2;
+			t = aux > 0 ? t + bis : t - bis;
+
+			//System.out.println("Aux: " + aux + " | " + "Bis: " + bis + " | " + "T: " + t);
+
+			if(aux == 0) {
+				break;
+			}
+		}
+		return t;
 	}
 
 	public static void estimadorPontual (){
@@ -319,8 +336,10 @@ class Main{
 		System.out.println(respostas.length);
 		System.out.println(respostas[0].length);
 
-		for (int i = 0; i < respostas.length; i++){
+		System.out.println(bissecao(0));
 
+		for (int i = 0; i < respostas.length; i++){
+			System.out.println("Aluno " + i + " | Theta: " + bissecao(i));
 		}
 
 	}
@@ -405,9 +424,6 @@ class Main{
 
 
 		estimadorPontual();
-
-		System.out.println(respostas[1999][99]);
-
 
 		/*
 

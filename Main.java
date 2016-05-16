@@ -141,7 +141,7 @@ class Main{
 			prob100[teste] = (N-prob100[teste])/N;
 		}
 
-		// Escreve resposta no arquivo
+		// Escreve o arquivo
 		List<String[]> probList = new ArrayList<String[]>();
 		probList.add(Arrays.toString(prob10).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob20).split("[\\[\\]]")[1].split(", "));

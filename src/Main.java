@@ -6,12 +6,14 @@ class Main{
 
 	public static final double[] theta = {-1.0, -0.5, 0.0, 0.5, 1.0}; // Theta dos alunos 1 ao 5
 
-	public static int N; // Numero de repetições
+	public static int N; // Numero de iterações
 
 	public static List<Double> a = new ArrayList<Double>(); // Parâmetro de discriminação
   public static List<Double> b = new ArrayList<Double>(); // Parâmetro de dificuldade
 
 	public static int[][] respostas = new int[2000][100];
+
+  public static double[] th = new double[2000];
 
 	// Métodos auxiliares
 	// Escrever arquivos
@@ -68,8 +70,8 @@ class Main{
 		// Quantidade máxima de questões é 100
 		if (quant > 100) return new Integer[0];
 
-		HashMap probsX = new HashMap(); // Probabilidades de x acertar as questões
-		HashMap probsY = new HashMap(); // Probabilidades de y acertar as questões
+		HashMap<Integer, Double> probsX = new HashMap<Integer, Double>(); // Probabilidades de x acertar as questões
+		HashMap<Integer, Double> probsY = new HashMap<Integer, Double>(); // Probabilidades de y acertar as questões
 
 		// Mapa com diferença das probabilidades (TreeMap ordena automaticamente)
 		Map<Double, Integer> diff = new TreeMap<Double, Integer>();
@@ -147,7 +149,7 @@ class Main{
 		probList.add(Arrays.toString(prob20).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob50).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob100).split("[\\[\\]]")[1].split(", "));
-		escreveArquivo("res/I1.txt", probList);
+		escreveArquivo("out/I1.txt", probList);
 
 		System.out.println("5 em relacao a 4, 3, 2 e 1 para "+N+" interacoes:");
 		System.out.println("Linha -> Prova[10, 20, 50, 100]");
@@ -204,7 +206,7 @@ class Main{
 		probList.add(Arrays.toString(prob20).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(p50V).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(prob50).split("[\\[\\]]")[1].split(", "));
-		escreveArquivo("res/I2.txt", probList);
+		escreveArquivo("out/I2.txt", probList);
 
 
 		System.out.println("5 em relacao a 4, 3, 2 e 1 para "+N+" interacoes na melhor prova:");
@@ -298,7 +300,7 @@ class Main{
 		probList.add(Arrays.toString(intervalo20).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(intervalo50).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(intervalo100).split("[\\[\\]]")[1].split(", "));
-		escreveArquivo("res/I3.txt", probList);
+		escreveArquivo("out/I3.txt", probList);
 
 		System.out.println("Limite de confianca em provas de 10, 20, 50 e 100 questoes para os 5 alunos:");
 		System.out.println("Linha -> Prova[10, 20, 50, 100]");
@@ -311,35 +313,117 @@ class Main{
 	}
 
 	public static double bissecao (int al){
-		double t = 0;
-		double bis = 1;
-		double aux = 1;
-		for (int z = 0; z < 1000; z++) {
+
+		double t = 0; // Theta do aluno
+		double bis = 5; // Range que o theta pode tomar
+		double aux = 1; // Valor inicial da somatoria (para poder iterar o for)
+
+		// Para um numero z de iterações maximas, tenta encontrar o valor em que a equação aproxima-se a zero
+		for (int z = 0; z < 100; z++) {
+
 			aux = 0;
+
+			// Derivada
 			for (int i = 0; i < a.size(); i++){
 				aux += (a.get(i)*(2*respostas[al][i]-1)*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))/(((Math.pow(Math.E, (a.get(i)*(t-b.get(i)))))+1)*((respostas[al][i]*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))-respostas[al][i]+1));
 			}
+
 			bis /= 2;
 			t = aux > 0 ? t + bis : t - bis;
 
-			//System.out.println("Aux: " + aux + " | " + "Bis: " + bis + " | " + "T: " + t);
+			//System.out.println("Aux: " + aux + " | " + "Bis: " + bis + " | " + "T: " + t + " | " + "Al: " + al);
 
-			if(aux == 0) {
-				break;
-			}
+			if(aux == 0) break;
+
 		}
+
 		return t;
+
 	}
 
 	public static void estimadorPontual (){
 
-		System.out.println(respostas.length);
-		System.out.println(respostas[0].length);
+		int[] sextos = {respostas.length/6,
+			              respostas.length/3,
+										respostas.length/2,
+										(2*respostas.length)/3,
+										(5*respostas.length)/6,
+										respostas.length};
 
-		System.out.println(bissecao(0));
+		Thread thr1 = new Thread() {
+			public void run() {
+				for (int i = 0; i < sextos[0]; i++){
+					th[i] = bissecao(i);
+					//System.out.println("Aluno " + i + " | Theta: " + th[i]);
+				}
+			}
+		};
 
-		for (int i = 0; i < respostas.length; i++){
-			System.out.println("Aluno " + i + " | Theta: " + bissecao(i));
+		Thread thr2 = new Thread() {
+			public void run() {
+				for (int i = sextos[0]; i < sextos[1]; i++){
+					th[i] = bissecao(i);
+					//System.out.println("Aluno " + i + " | Theta: " + th[i]);
+				}
+			}
+		};
+
+		Thread thr3 = new Thread() {
+			public void run() {
+				for (int i = sextos[1]; i < sextos[2]; i++){
+					th[i] = bissecao(i);
+					//System.out.println("Aluno " + i + " | Theta: " + th[i]);
+				}
+			}
+		};
+
+		Thread thr4 = new Thread() {
+			public void run() {
+				for (int i = sextos[2]; i < sextos[3]; i++){
+					th[i] = bissecao(i);
+					//System.out.println("Aluno " + i + " | Theta: " + th[i]);
+				}
+			}
+		};
+
+		Thread thr5 = new Thread() {
+			public void run() {
+				for (int i = sextos[3]; i < sextos[4]; i++){
+					th[i] = bissecao(i);
+					//System.out.println("Aluno " + i + " | Theta: " + th[i]);
+				}
+			}
+		};
+
+		Thread thr6 = new Thread() {
+			public void run() {
+				for (int i = sextos[4]; i < sextos[5]; i++){
+					th[i] = bissecao(i);
+					//System.out.println("Aluno " + i + " | Theta: " + th[i]);
+				}
+			}
+		};
+
+		thr1.start();
+		thr2.start();
+		thr3.start();
+		thr4.start();
+		thr5.start();
+		thr6.start();
+
+		try {
+			thr1.join();
+			thr2.join();
+			thr3.join();
+			thr4.join();
+			thr5.join();
+			thr6.join();
+		} catch (InterruptedException ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		for (int i = th.length-1; i >= 0; i--) {
+			System.out.println("Theta aluno " + i + ": " + th[i]);
 		}
 
 	}
@@ -356,7 +440,7 @@ class Main{
 
 		// Lendo o arquivo de questões e preenchendo lista de parâmetros
 		long tempo_inicial = System.nanoTime(); // Informações de duração dos calculos
-		Scanner s = new Scanner(new File("questoes.txt"));
+		Scanner s = new Scanner(new File("res/questoes.txt"));
 		int cont = 0;
 		while(s.hasNext()) {
 			cont++;
@@ -400,10 +484,9 @@ class Main{
 
 		System.out.println("**********************************************************************");
 
-
 		// Lendo o arquivo de respostas e populando array bidimensional com os acertos/erros
 		tempo_inicial = System.nanoTime();
-		Scanner s2 = new Scanner(new File("respostas.txt"));
+		Scanner s2 = new Scanner(new File("res/respostas.txt"));
 		int aluno = 0;
 		int resposta = 0;
 		while(s2.hasNext()) {
@@ -422,8 +505,16 @@ class Main{
 		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
 		System.out.println("Tempo de leitura do arquivo 'respostas.txt' em nanosegundos: " + diferenca);
 
+		System.out.println("**********************************************************************");
+		System.out.println("Calculando estimador do Theta...");
+		tempo_inicial = System.nanoTime();
+		estimadorPontual(); // IV
+		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
+		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
 
-		estimadorPontual();
+		System.out.println("**********************************************************************");
+
+
 
 		/*
 

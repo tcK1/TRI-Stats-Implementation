@@ -421,7 +421,16 @@ class Main{
 		} catch (InterruptedException ex) {
 			System.out.println(ex.getMessage());
 		}
-		
+
+		// Escreve o arquivo
+		List<String[]> probList = new ArrayList<String[]>();
+		for(int i = 0; i < th.length; i++){
+			String[] esc = new String[1];
+			esc[0] = Double.toString(th[i]);
+			probList.add(Arrays.toString(esc).split("[\\[\\]]")[1].split(", "));
+		}
+		escreveArquivo("out/II1.txt", probList);
+
 		for (int i = th.length-1; i >= 0; i--) {
 			System.out.println("Theta aluno " + i + ": " + th[i]);
 		}

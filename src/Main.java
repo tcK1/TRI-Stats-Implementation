@@ -431,9 +431,16 @@ class Main{
 		}
 		escreveArquivo("out/II1.txt", probList);
 
-		for (int i = th.length-1; i >= 0; i--) {
-			System.out.println("Theta aluno " + i + ": " + th[i]);
-		}
+
+		double[] pp = Arrays.copyOf(th, th.length);
+		Arrays.sort(pp);
+		System.out.println("Habilidade do aluno:");
+		System.out.println("Pior aluno: " + pp[0] + " | Melhor aluno: " + pp[pp.length-1]);
+		// int alu = 0;
+		// for (double i : th) {
+		// 	System.out.println("Theta aluno " + alu + ": " + i);
+		// 	alu++;
+		// }
 
 	}
 	// Métodos funcionais

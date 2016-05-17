@@ -18,3 +18,12 @@ Dados os arquivos iniciais: "questoes.txt" e "respostas.txt", calcular:
 5. Selecionando o melhor aluno - Habilidade do Aluno
 6. Intervalo de confiança - Habilidade do Aluno
 7. Intervalo de confiança - t-student
+
+**Descrição dos diretórios do projeto:**
+```
+/bin/: Executáveis gerados
+/src/: Códigos fonte
+/res/: Arquivos de entrada do programa
+/out/: Arquivos de saida gerados
+/info/: Arquivos de informações
+```

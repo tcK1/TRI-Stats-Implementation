@@ -319,7 +319,7 @@ class Main{
 		double aux = 1; // Valor inicial da somatoria (para poder iterar o for)
 
 		// Para um numero z de iterações maximas, tenta encontrar o valor em que a equação aproxima-se a zero
-		for (int z = 0; z < 100; z++) {
+		for (int z = 0; z < 100 || aux == 0; z++) {
 
 			aux = 0;
 
@@ -436,6 +436,10 @@ class Main{
 		Arrays.sort(pp);
 		System.out.println("Habilidade do aluno:");
 		System.out.println("Pior aluno: " + pp[0] + " | Melhor aluno: " + pp[pp.length-1]);
+		double sum = 0;
+		for (double d : pp) sum += d;
+		System.out.println("Media: " + sum/(double)pp.length);
+
 		// int alu = 0;
 		// for (double i : th) {
 		// 	System.out.println("Theta aluno " + alu + ": " + i);
@@ -546,7 +550,6 @@ class Main{
 		// Tempo final da execução do programa
 		diferenca = (System.nanoTime() - inicio)/1e6;
 		System.out.println("Duracao da execucao do programa: " + diferenca);
-
 
   }
 }

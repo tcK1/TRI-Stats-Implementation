@@ -109,6 +109,66 @@ class Main{
 		return aux;
 
 	}
+
+	// Encontrar o maximo da função por bisseção (para um aluno "al")
+	public static double bissecao (int al){
+
+		double t = 0; // Theta do aluno
+		double bis = 5; // Range que o theta pode tomar
+		double aux = 1; // Valor inicial da somatoria (para poder iterar o for)
+
+		// Para um numero z de iterações maximas, tenta encontrar o valor em que a equação aproxima-se a zero
+		for (int z = 0; z < 100 || aux == 0; z++) {
+
+			aux = 0;
+
+			// Derivada
+			for (int i = 0; i < a.size(); i++){
+				aux += (a.get(i)*(2*respostas[al][i]-1)*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))/(((Math.pow(Math.E, (a.get(i)*(t-b.get(i)))))+1)*((respostas[al][i]*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))-respostas[al][i]+1));
+			}
+
+			bis /= 2;
+			t = aux > 0 ? t + bis : t - bis;
+
+			//System.out.println("Aux: " + aux + " | " + "Bis: " + bis + " | " + "T: " + t + " | " + "Al: " + al);
+
+			if(aux == 0) break;
+
+		}
+
+		return t;
+
+	}
+
+	// Encontrar o maximo da função por bisseção (para uma prova [questões e respostas])
+	public static double bissecaoProva (Integer[] quest, Integer[] resp){
+
+		double t = 0; // Theta do aluno
+		double bis = 5; // Range que o theta pode tomar
+		double aux = 1; // Valor inicial da somatoria (para poder iterar o for)
+
+		// Para um numero z de iterações maximas, tenta encontrar o valor em que a equação aproxima-se a zero
+		for (int z = 0; z < 100 || aux == 0; z++) {
+
+			aux = 0;
+
+			// Derivada
+			for (int i = 0; i < quest.length; i++){
+				aux += (a.get(quest[i])*(2*resp[i]-1)*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))/(((Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i])))))+1)*((resp[i]*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))-resp[i]+1));
+			}
+
+			bis /= 2;
+			t = aux > 0 ? t + bis : t - bis;
+
+			//System.out.println("Aux: " + aux + " | " + "Bis: " + bis + " | " + "T: " + t);
+
+			if(aux == 0) break;
+
+		}
+
+		return t;
+
+	}
 	// Métodos auxiliares
 
 	// Métodos funcionais
@@ -329,64 +389,6 @@ class Main{
 
 	}
 
-	public static double bissecao (int al){
-
-		double t = 0; // Theta do aluno
-		double bis = 5; // Range que o theta pode tomar
-		double aux = 1; // Valor inicial da somatoria (para poder iterar o for)
-
-		// Para um numero z de iterações maximas, tenta encontrar o valor em que a equação aproxima-se a zero
-		for (int z = 0; z < 100 || aux == 0; z++) {
-
-			aux = 0;
-
-			// Derivada
-			for (int i = 0; i < a.size(); i++){
-				aux += (a.get(i)*(2*respostas[al][i]-1)*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))/(((Math.pow(Math.E, (a.get(i)*(t-b.get(i)))))+1)*((respostas[al][i]*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))-respostas[al][i]+1));
-			}
-
-			bis /= 2;
-			t = aux > 0 ? t + bis : t - bis;
-
-			//System.out.println("Aux: " + aux + " | " + "Bis: " + bis + " | " + "T: " + t + " | " + "Al: " + al);
-
-			if(aux == 0) break;
-
-		}
-
-		return t;
-
-	}
-
-	public static double bissecaoProva (Integer[] quest, Integer[] resp){
-
-		double t = 0; // Theta do aluno
-		double bis = 5; // Range que o theta pode tomar
-		double aux = 1; // Valor inicial da somatoria (para poder iterar o for)
-
-		// Para um numero z de iterações maximas, tenta encontrar o valor em que a equação aproxima-se a zero
-		for (int z = 0; z < 100 || aux == 0; z++) {
-
-			aux = 0;
-
-			// Derivada
-			for (int i = 0; i < quest.length; i++){
-				aux += (a.get(quest[i])*(2*resp[i]-1)*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))/(((Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i])))))+1)*((resp[i]*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))-resp[i]+1));
-			}
-
-			bis /= 2;
-			t = aux > 0 ? t + bis : t - bis;
-
-			//System.out.println("Aux: " + aux + " | " + "Bis: " + bis + " | " + "T: " + t);
-
-			if(aux == 0) break;
-
-		}
-
-		return t;
-
-	}
-
 	public static void estimadorPontual (){
 
 		int[] sextos = {respostas.length/6,
@@ -495,9 +497,6 @@ class Main{
 	}
 
 	public static void melhorAlunoHab(){
-		// double testemet = bissecaoProva(prova(100, 0.5, 1), provaResp(prova(100, 0.5, 1), 1));
-		// System.out.println(testemet);
-
 
 		// Seleciona a prova de "x" questões onde o aluno "a" é melhor que o "b"
 		Integer p10V[] = prova(10, theta[4], theta[3]);
@@ -601,6 +600,172 @@ class Main{
 		System.out.println(prob100[0] + " , " + prob100[1] + " , " + prob100[2] + " , " + prob100[3]);
 
 	}
+
+	public static void intervaloDeConfiancaHab(){
+
+		/*** Mesmo procedimento de melhor prova ***/
+		// Seleciona a prova de "x" questões onde o aluno "a" é melhor que o "b"
+		Integer p10V[] = prova(10, theta[4], theta[3]);
+		Integer p20V[] = prova(20, theta[4], theta[3]);
+		Integer p50V[] = prova(50, theta[4], theta[3]);
+		Integer p100V[] = prova(100, theta[4], theta[3]);
+		/*** Mesmo procedimento de melhor prova ***/
+
+		double[][] notas10  = new double[5][N];
+		double[][] notas20  = new double[5][N];
+		double[][] notas50  = new double[5][N];
+		double[][] notas100 = new double[5][N];
+
+		// Para um numero consideravel de vezes, adiciona notas para cada aluno em cada prova
+		// for(int i = 0; i < N; i++){
+		// 	for (int t = 0; t < 5; t++){
+		// 		notas10[t][i] = nota(p10V, theta[t]);
+		// 		notas20[t][i] = nota(p20V, theta[t]);
+		// 		notas50[t][i] = nota(p50V, theta[t]);
+		// 		notas100[t][i] = nota(p100V, theta[t]);
+		// 	}
+		// }
+
+		// Para um numero consideravel de vezes, ve se o aluno "t"[0 a 3] for melhor que o aluno 5[4]
+		Thread thr1 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					notas10[0][i]  = bissecaoProva(p10V, provaResp(p10V, theta[0]));
+					notas20[0][i]  = bissecaoProva(p20V, provaResp(p20V, theta[0]));
+					notas50[0][i]  = bissecaoProva(p50V, provaResp(p50V, theta[0]));
+					notas100[0][i] = bissecaoProva(p100V, provaResp(p100V, theta[0]));
+				}
+			}
+		};
+
+		Thread thr2 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					notas10[1][i]  = bissecaoProva(p10V, provaResp(p10V, theta[1]));
+					notas20[1][i]  = bissecaoProva(p20V, provaResp(p20V, theta[1]));
+					notas50[1][i]  = bissecaoProva(p50V, provaResp(p50V, theta[1]));
+					notas100[1][i] = bissecaoProva(p100V, provaResp(p100V, theta[1]));
+				}
+			}
+		};
+
+		Thread thr3 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					notas10[2][i]  = bissecaoProva(p10V, provaResp(p10V, theta[2]));
+					notas20[2][i]  = bissecaoProva(p20V, provaResp(p20V, theta[2]));
+					notas50[2][i]  = bissecaoProva(p50V, provaResp(p50V, theta[2]));
+					notas100[2][i] = bissecaoProva(p100V, provaResp(p100V, theta[2]));
+				}
+			}
+		};
+
+		Thread thr4 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					notas10[3][i]  = bissecaoProva(p10V, provaResp(p10V, theta[3]));
+					notas20[3][i]  = bissecaoProva(p20V, provaResp(p20V, theta[3]));
+					notas50[3][i]  = bissecaoProva(p50V, provaResp(p50V, theta[3]));
+					notas100[3][i] = bissecaoProva(p100V, provaResp(p100V, theta[3]));
+				}
+			}
+		};
+
+		Thread thr5 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					notas10[4][i]  = bissecaoProva(p10V, provaResp(p10V, theta[4]));
+					notas20[4][i]  = bissecaoProva(p20V, provaResp(p20V, theta[4]));
+					notas50[4][i]  = bissecaoProva(p50V, provaResp(p50V, theta[4]));
+					notas100[4][i] = bissecaoProva(p100V, provaResp(p100V, theta[4]));
+				}
+			}
+		};
+
+		thr1.start();
+		thr2.start();
+		thr3.start();
+		thr4.start();
+		thr5.start();
+
+		try {
+			thr1.join();
+			thr2.join();
+			thr3.join();
+			thr4.join();
+			thr5.join();
+		} catch (InterruptedException ex) {
+			System.out.println(ex.getMessage());
+		}
+
+		// Ordena as notas
+		for (int i = 0; i < 5; i++){
+			Arrays.sort(notas10[i]);
+			Arrays.sort(notas20[i]);
+			Arrays.sort(notas50[i]);
+			Arrays.sort(notas100[i]);
+		}
+
+
+		// Calcula o intervalo de confiança
+		double alpha = 0.1;
+
+		int limiteInferior = (int)Math.ceil(N*(alpha/2));
+		int limiteSuperior = (int)Math.floor(N-(N*(alpha/2)));
+
+		// Array com as notas somente no intervalo (desnesessário)
+		/*
+		int[][] intervalo10  = new int[5][N];
+		int[][] intervalo20  = new int[5][N];
+		int[][] intervalo50  = new int[5][N];
+		int[][] intervalo100 = new int[5][N];
+
+		for (int i = 0; i < 5; i++){
+			intervalo10[i] = Arrays.copyOfRange(notas10[i], limiteInferior, limiteSuperior);
+			intervalo20[i] = Arrays.copyOfRange(notas20[i], limiteInferior, limiteSuperior);
+			intervalo50[i] = Arrays.copyOfRange(notas50[i], limiteInferior, limiteSuperior);
+			intervalo100[i] = Arrays.copyOfRange(notas100[i], limiteInferior, limiteSuperior);
+		}
+		*/
+
+		// Acha os valores dos limites para cada prova e para cada aluno
+		double[] intervalo10 = new double[10];
+		double[] intervalo20 = new double[10];
+		double[] intervalo50 = new double[10];
+		double[] intervalo100 = new double[10];
+
+		for(int i = 0; i < 9; i=i+2){
+			intervalo10[i]   = notas10[i/2][limiteInferior];
+			intervalo10[i+1] = notas10[i/2][limiteSuperior];
+
+			intervalo20[i]   = notas20[i/2][limiteInferior];
+			intervalo20[i+1] = notas20[i/2][limiteSuperior];
+
+			intervalo50[i]   = notas50[i/2][limiteInferior];
+			intervalo50[i+1] = notas50[i/2][limiteSuperior];
+
+			intervalo100[i]   = notas100[i/2][limiteInferior];
+			intervalo100[i+1] = notas100[i/2][limiteSuperior];
+		}
+		// Fim do calculo
+
+		// Escreve o arquivo
+		List<String[]> probList = new ArrayList<String[]>();
+		probList.add(Arrays.toString(intervalo10).split("[\\[\\]]")[1].split(", "));
+		probList.add(Arrays.toString(intervalo20).split("[\\[\\]]")[1].split(", "));
+		probList.add(Arrays.toString(intervalo50).split("[\\[\\]]")[1].split(", "));
+		probList.add(Arrays.toString(intervalo100).split("[\\[\\]]")[1].split(", "));
+		escreveArquivo("out/I3.txt", probList);
+
+		System.out.println("Limite de confianca em provas de 10, 20, 50 e 100 questoes para os 5 alunos:");
+		System.out.println("Linha -> Prova[10, 20, 50, 100]");
+		System.out.println("Coluna -> Aluno[1(Inf-Sup), 2(Inf-Sup), 3(Inf-Sup), 4(Inf-Sup), 5(Inf-Sup)]");
+		System.out.println(intervalo10[0] + " - " + intervalo10[1] + " , " + intervalo10[2] + " - " + intervalo10[3] + " , " + intervalo10[4] + " - " + intervalo10[5] + " , " + intervalo10[6] + " - " + intervalo10[7] + " , " + intervalo10[8] + " - " + intervalo10[9]);
+		System.out.println(intervalo20[0] + " - " + intervalo20[1] + " , " + intervalo20[2] + " - " + intervalo20[3] + " , " + intervalo20[4] + " - " + intervalo20[5] + " , " + intervalo20[6] + " - " + intervalo20[7] + " , " + intervalo20[8] + " - " + intervalo20[9]);
+		System.out.println(intervalo50[0] + " - " + intervalo50[1] + " , " + intervalo50[2] + " - " + intervalo50[3] + " , " + intervalo50[4] + " - " + intervalo50[5] + " , " + intervalo50[6] + " - " + intervalo50[7] + " , " + intervalo50[8] + " - " + intervalo50[9]);
+		System.out.println(intervalo100[0] + " - " + intervalo100[1] + " , " + intervalo100[2] + " - " + intervalo100[3] + " , " + intervalo100[4] + " - " + intervalo100[5] + " , " + intervalo100[6] + " - " + intervalo100[7] + " , " + intervalo100[8] + " - " + intervalo100[9]);
+
+	}
 	// Métodos funcionais
 
   public static void main (String[] args) throws FileNotFoundException{
@@ -696,18 +861,7 @@ class Main{
 
 		System.out.println("**********************************************************************");
 
-
-		/*
-
-		http://www.derivative-calculator.net/#expr=log%28%28%28y%29%28%28e%5E%28a%28t-b%29%29%29%2F%28%28e%5E%28a%28t-b%29%29%29%20%2B%201%29%29%29%20%2B%20%28%281-y%29%28%281%29-%28%28e%5E%28a%28t-b%29%29%29%2F%28%28e%5E%28a%28t-b%29%29%20%20%2B%201%29%29%29%29%29%29&diffvar=t
-
-
-		(a(2y-1)(e^(a(t-b))))/(((e^(a(t-b)))+1)((y(e^(a(t-b))))-y+1))
-
-		(a*(2y-1)*(Math.pow(Math.E, (a(t-b)))))/(((Math.pow(Math.E, (a(t-b))))+1)*((y*(Math.pow(Math.E, (a(t-b)))))-y+1))
-
-		*/
-
+		intervaloDeConfiancaHab();
 
 		// Tempo final da execução do programa
 		diferenca = (System.nanoTime() - inicio)/1e6;

@@ -136,6 +136,7 @@ class Main{
 		double[] prob50 = new double[4];
 		double[] prob100 = new double[4];
 
+		// Notas do aluno 5
 		int notaP10 = nota(p10, theta[4]);
 		int notaP20 = nota(p20, theta[4]);
 		int notaP50 = nota(p50, theta[4]);
@@ -357,6 +358,35 @@ class Main{
 
 	}
 
+	public static double bissecaoProva (Integer[] quest, Integer[] resp){
+
+		double t = 0; // Theta do aluno
+		double bis = 5; // Range que o theta pode tomar
+		double aux = 1; // Valor inicial da somatoria (para poder iterar o for)
+
+		// Para um numero z de iterações maximas, tenta encontrar o valor em que a equação aproxima-se a zero
+		for (int z = 0; z < 100 || aux == 0; z++) {
+
+			aux = 0;
+
+			// Derivada
+			for (int i = 0; i < quest.length; i++){
+				aux += (a.get(quest[i])*(2*resp[i]-1)*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))/(((Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i])))))+1)*((resp[i]*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))-resp[i]+1));
+			}
+
+			bis /= 2;
+			t = aux > 0 ? t + bis : t - bis;
+
+			//System.out.println("Aux: " + aux + " | " + "Bis: " + bis + " | " + "T: " + t);
+
+			if(aux == 0) break;
+
+		}
+
+		return t;
+
+	}
+
 	public static void estimadorPontual (){
 
 		int[] sextos = {respostas.length/6,
@@ -463,6 +493,114 @@ class Main{
 		// }
 
 	}
+
+	public static void melhorAlunoHab(){
+		// double testemet = bissecaoProva(prova(100, 0.5, 1), provaResp(prova(100, 0.5, 1), 1));
+		// System.out.println(testemet);
+
+
+		// Seleciona a prova de "x" questões onde o aluno "a" é melhor que o "b"
+		Integer p10V[] = prova(10, theta[4], theta[3]);
+		Integer p20V[] = prova(20, theta[4], theta[3]);
+		Integer p50V[] = prova(50, theta[4], theta[3]);
+		Integer p100V[] = prova(100, theta[4], theta[3]);
+
+		// Array para calculo das probabilidades
+		double[] prob10 = new double[4];
+		double[] prob20 = new double[4];
+		double[] prob50 = new double[4];
+		double[] prob100 = new double[4];
+
+		// Notas do aluno 5
+		double thetaP10  = bissecaoProva(p10V, provaResp(p10V, theta[4]));
+		double thetaP20  = bissecaoProva(p20V, provaResp(p20V, theta[4]));
+		double thetaP50  = bissecaoProva(p50V, provaResp(p50V, theta[4]));
+		double thetaP100 = bissecaoProva(p100V, provaResp(p100V, theta[4]));
+
+		// Para um numero consideravel de vezes, ve se o aluno "t"[0 a 3] for melhor que o aluno 5[4]
+		Thread thr1 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					if(thetaP10  < bissecaoProva(p10V, provaResp(p10V, theta[0]))) prob10[0]++;
+					if(thetaP20  < bissecaoProva(p20V, provaResp(p20V, theta[0]))) prob20[0]++;
+					if(thetaP50  < bissecaoProva(p50V, provaResp(p50V, theta[0]))) prob50[0]++;
+					if(thetaP100 < bissecaoProva(p100V, provaResp(p100V, theta[0]))) prob100[0]++;
+				}
+			}
+		};
+
+		Thread thr2 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					if(thetaP10  < bissecaoProva(p10V, provaResp(p10V, theta[1]))) prob10[1]++;
+					if(thetaP20  < bissecaoProva(p20V, provaResp(p20V, theta[1]))) prob20[1]++;
+					if(thetaP50  < bissecaoProva(p50V, provaResp(p50V, theta[1]))) prob50[1]++;
+					if(thetaP100 < bissecaoProva(p100V, provaResp(p100V, theta[1]))) prob100[1]++;
+				}
+			}
+		};
+
+		Thread thr3 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					if(thetaP10  < bissecaoProva(p10V, provaResp(p10V, theta[2]))) prob10[2]++;
+					if(thetaP20  < bissecaoProva(p20V, provaResp(p20V, theta[2]))) prob20[2]++;
+					if(thetaP50  < bissecaoProva(p50V, provaResp(p50V, theta[2]))) prob50[2]++;
+					if(thetaP100 < bissecaoProva(p100V, provaResp(p100V, theta[2]))) prob100[2]++;
+				}
+			}
+		};
+
+		Thread thr4 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					if(thetaP10  < bissecaoProva(p10V, provaResp(p10V, theta[3]))) prob10[3]++;
+					if(thetaP20  < bissecaoProva(p20V, provaResp(p20V, theta[3]))) prob20[3]++;
+					if(thetaP50  < bissecaoProva(p50V, provaResp(p50V, theta[3]))) prob50[3]++;
+					if(thetaP100 < bissecaoProva(p100V, provaResp(p100V, theta[3]))) prob100[3]++;
+				}
+			}
+		};
+
+		thr1.start();
+		thr2.start();
+		thr3.start();
+		thr4.start();
+
+		try {
+			thr1.join();
+			thr2.join();
+			thr3.join();
+			thr4.join();
+		} catch (InterruptedException ex) {
+			System.out.println(ex.getMessage());
+		}
+
+		// Calcula as probabilidades: (Total de provas - Quantas provas for melhor) / Total de provas
+		for (int teste = 0; teste < 4; teste++){
+			prob10[teste] = (N-prob10[teste])/N;
+			prob20[teste] = (N-prob20[teste])/N;
+			prob50[teste] = (N-prob50[teste])/N;
+			prob100[teste] = (N-prob100[teste])/N;
+		}
+
+		// Escreve o arquivo
+		List<String[]> probList = new ArrayList<String[]>();
+		probList.add(Arrays.toString(prob10).split("[\\[\\]]")[1].split(", "));
+		probList.add(Arrays.toString(prob20).split("[\\[\\]]")[1].split(", "));
+		probList.add(Arrays.toString(prob50).split("[\\[\\]]")[1].split(", "));
+		probList.add(Arrays.toString(prob100).split("[\\[\\]]")[1].split(", "));
+		escreveArquivo("out/II2.txt", probList);
+
+		System.out.println("5 em relacao a 4, 3, 2 e 1 para "+N+" interacoes:");
+		System.out.println("Linha -> Prova[10, 20, 50, 100]");
+		System.out.println("Coluna -> Aluno[1, 2, 3, 4]");
+		System.out.println(prob10[0] + " , " + prob10[1] + " , " + prob10[2] + " , " + prob10[3]);
+		System.out.println(prob20[0] + " , " + prob20[1] + " , " + prob20[2] + " , " + prob20[3]);
+		System.out.println(prob50[0] + " , " + prob50[1] + " , " + prob50[2] + " , " + prob50[3]);
+		System.out.println(prob100[0] + " , " + prob100[1] + " , " + prob100[2] + " , " + prob100[3]);
+
+	}
 	// Métodos funcionais
 
   public static void main (String[] args) throws FileNotFoundException{
@@ -541,6 +679,7 @@ class Main{
 		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
 		System.out.println("Tempo de leitura do arquivo 'respostas.txt' em nanosegundos: " + diferenca);
 
+		/// Chamando métodos da segunda parte
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando estimador do Theta...");
 		tempo_inicial = System.nanoTime();
@@ -549,7 +688,13 @@ class Main{
 		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
 
 		System.out.println("**********************************************************************");
+		System.out.println("Calculando melhor aluno usando a Habilidade...");
+		tempo_inicial = System.nanoTime();
+		melhorAlunoHab(); // V
+		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
+		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
 
+		System.out.println("**********************************************************************");
 
 
 		/*
@@ -562,8 +707,8 @@ class Main{
 		(a*(2y-1)*(Math.pow(Math.E, (a(t-b)))))/(((Math.pow(Math.E, (a(t-b))))+1)*((y*(Math.pow(Math.E, (a(t-b)))))-y+1))
 
 		*/
-		Integer[] teste = provaResp(prova(10, 0.5, 1), 1);
-		System.out.println(teste.toString());
+
+
 		// Tempo final da execução do programa
 		diferenca = (System.nanoTime() - inicio)/1e6;
 		System.out.println("Duracao da execucao do programa: " + diferenca);

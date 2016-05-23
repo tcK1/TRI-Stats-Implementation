@@ -88,7 +88,23 @@ class Main{
 		}
 
 		// Encontra a prova com "quant" quantidade de questões (max: 100)
-		Integer aux[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), (100-quant), 99);
+		Integer aux[] = Arrays.copyOfRange(diff.values().toArray(new Integer[100]), (100-quant), 100);
+
+		return aux;
+
+	}
+
+	// Retorna um array de 0's e 1's (respostas do aluno)
+	public static Integer[] provaResp(Integer[] prova, double theta){
+
+		Integer[] aux = new Integer[prova.length];
+
+		int qst = 0;
+		for (int i : prova){
+			if (acertou(theta, (double)a.get(i), (double)b.get(i))) aux[qst] = 1;
+			else aux[qst] = 0;
+			qst++;
+		}
 
 		return aux;
 
@@ -546,7 +562,8 @@ class Main{
 		(a*(2y-1)*(Math.pow(Math.E, (a(t-b)))))/(((Math.pow(Math.E, (a(t-b))))+1)*((y*(Math.pow(Math.E, (a(t-b)))))-y+1))
 
 		*/
-
+		Integer[] teste = provaResp(prova(10, 0.5, 1), 1);
+		System.out.println(teste.toString());
 		// Tempo final da execução do programa
 		diferenca = (System.nanoTime() - inicio)/1e6;
 		System.out.println("Duracao da execucao do programa: " + diferenca);

@@ -6,7 +6,7 @@ class Main{
 
 	public static final double[] theta = {-1.0, -0.5, 0.0, 0.5, 1.0}; // Theta dos alunos 1 ao 5
 
-	public static int N; // Numero de iterações
+	public static int N; // Quantidade de iterações
 
 	public static List<Double> a = new ArrayList<Double>(); // Parâmetro de discriminação
   public static List<Double> b = new ArrayList<Double>(); // Parâmetro de dificuldade
@@ -111,7 +111,7 @@ class Main{
 	}
 
 	// Encontrar o maximo da função por bisseção (para um aluno "al")
-	public static double bissecao (int al){
+	public static double bissecao(int al){
 
 		double t = 0; // Theta do aluno
 		double bis = 5; // Range que o theta pode tomar
@@ -141,7 +141,7 @@ class Main{
 	}
 
 	// Encontrar o maximo da função por bisseção (para uma prova [questões e respostas])
-	public static double bissecaoProva (Integer[] quest, Integer[] resp){
+	public static double bissecaoProva(Integer[] quest, Integer[] resp){
 
 		double t = 0; // Theta do aluno
 		double bis = 5; // Range que o theta pode tomar
@@ -616,16 +616,6 @@ class Main{
 		double[][] notas50  = new double[5][N];
 		double[][] notas100 = new double[5][N];
 
-		// Para um numero consideravel de vezes, adiciona notas para cada aluno em cada prova
-		// for(int i = 0; i < N; i++){
-		// 	for (int t = 0; t < 5; t++){
-		// 		notas10[t][i] = nota(p10V, theta[t]);
-		// 		notas20[t][i] = nota(p20V, theta[t]);
-		// 		notas50[t][i] = nota(p50V, theta[t]);
-		// 		notas100[t][i] = nota(p100V, theta[t]);
-		// 	}
-		// }
-
 		// Para um numero consideravel de vezes, ve se o aluno "t"[0 a 3] for melhor que o aluno 5[4]
 		Thread thr1 = new Thread() {
 			public void run() {
@@ -755,7 +745,7 @@ class Main{
 		probList.add(Arrays.toString(intervalo20).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(intervalo50).split("[\\[\\]]")[1].split(", "));
 		probList.add(Arrays.toString(intervalo100).split("[\\[\\]]")[1].split(", "));
-		escreveArquivo("out/I3.txt", probList);
+		escreveArquivo("out/II3.txt", probList);
 
 		System.out.println("Limite de confianca em provas de 10, 20, 50 e 100 questoes para os 5 alunos:");
 		System.out.println("Linha -> Prova[10, 20, 50, 100]");
@@ -860,8 +850,13 @@ class Main{
 		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
 
 		System.out.println("**********************************************************************");
+		System.out.println("Calculando intervalo de confianca da Habilidade...");
+		tempo_inicial = System.nanoTime();
+		intervaloDeConfiancaHab(); // VI
+		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
+		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
 
-		intervaloDeConfiancaHab();
+		System.out.println("**********************************************************************");
 
 		// Tempo final da execução do programa
 		diferenca = (System.nanoTime() - inicio)/1e6;

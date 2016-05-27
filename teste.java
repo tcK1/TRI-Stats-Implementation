@@ -102,10 +102,10 @@ class teste{
 		/* Format histogram */
 		// For each array element, output a bar in histogram
 		for ( int counter = 0; counter < qntd.length; counter++ ) {
-			output += "\n" + counter + "\t" + qntd[ counter ] + "\t";
+			output += "\n" + (counter+1) + "\t" + qntd[ counter ] + "\t";
 
 			// Print bar of asterisks                               
-			for ( int stars = 0; stars < qntd[ counter ]/50; stars++ ) {
+			for ( int stars = 0; stars < qntd[ counter ]/25; stars++ ) {
 				output += "*";   
 			}
 		}
@@ -116,5 +116,32 @@ class teste{
 		
 		System.out.println(Arrays.toString(qntd));
 		
+		int[] qntdNorm = new int[qntd.length];
+		for (int j = 0; j < qntd.length; j++){
+			qntdNorm[j] = qntd[j]/50;
+		}
+
+		int[] qntdSort = Arrays.copyOf(qntdNorm, qntd.length);
+		Arrays.sort(qntdSort);
+        int max = qntdSort[qntdSort.length-1];
+		System.out.println(max);
+		
+		String minhavez = "";
+		
+		for (int i = max; i >= 0; i--){
+			minhavez += "\n";
+			
+			for (int j = 0; j < qntdNorm.length; j++){
+				if(qntdNorm[j] >= i){
+					minhavez += "*\t"; 
+				} else minhavez += " \t";
+			}
+			
+		}
+		
+		System.out.println(minhavez);
+		
+		
+				
 	}
 }

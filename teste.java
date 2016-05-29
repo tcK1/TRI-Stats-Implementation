@@ -5,42 +5,30 @@ import java.text.*;
 
 class teste{
 
-	public static void main (String[] args) throws FileNotFoundException{
+	public static void histograma (double[] thetas){
 		
 		int norm = 50; // Valor para normalizar o histograma
-		
-		double[] array	= new double[2000];
-				
-		Scanner s = new Scanner(new File("II1.txt"));
-		int cont = 0;
-		while(s.hasNext()) {
-			BigDecimal bd = new BigDecimal(s.next());
-			double val = bd.doubleValue();
-			array[cont] = val;
-			cont++;
-		}
-		s.close();
-		
-		Arrays.sort(array);
+
+		Arrays.sort(thetas);
 
 		// Define um tamanho para as 10 partições
-		double tamanhoPart = (array[array.length-1]-array[0])/(double)10;
-		double[] particoes = {	array[0], 
-								array[0]+tamanhoPart,
-								array[0]+(tamanhoPart*2),
-								array[0]+(tamanhoPart*3),
-								array[0]+(tamanhoPart*4),
-								array[0]+(tamanhoPart*5),
-								array[0]+(tamanhoPart*6),
-								array[0]+(tamanhoPart*7),
-								array[0]+(tamanhoPart*8),
-								array[0]+(tamanhoPart*9),
-								array[0]+(tamanhoPart*10)
+		double tamanhoPart = (thetas[thetas.length-1]-thetas[0])/(double)10;
+		double[] particoes = {	thetas[0], 
+								thetas[0]+tamanhoPart,
+								thetas[0]+(tamanhoPart*2),
+								thetas[0]+(tamanhoPart*3),
+								thetas[0]+(tamanhoPart*4),
+								thetas[0]+(tamanhoPart*5),
+								thetas[0]+(tamanhoPart*6),
+								thetas[0]+(tamanhoPart*7),
+								thetas[0]+(tamanhoPart*8),
+								thetas[0]+(tamanhoPart*9),
+								thetas[0]+(tamanhoPart*10)
 								};
 								
 		
 		int[] qntd = new int[particoes.length-1];
-		for(double i : array){
+		for(double i : thetas){
 			if (i >= particoes[0] && i < particoes[1])   qntd[0]++;
 			if (i >= particoes[1] && i < particoes[2])   qntd[1]++;
 			if (i >= particoes[2] && i < particoes[3])   qntd[2]++;
@@ -68,6 +56,7 @@ class teste{
 		Arrays.sort(qntdSort);
         int max = qntdSort[qntdSort.length-1];
 		
+		// For entre max e 1, se colocar 0 mostra a linha com 0 elementos
 		for (int i = max; i >= 1; i--){
 			
 			System.out.printf("%-6s", i*norm); // Printa a amplitude
@@ -125,4 +114,23 @@ class teste{
 		// Fim do print do gráfico
 				
 	}
+	
+	public static void main (String[] args) throws FileNotFoundException{
+
+		double[] array	= new double[2000];
+				
+		Scanner s = new Scanner(new File("II1.txt"));
+		int cont = 0;
+		while(s.hasNext()) {
+			BigDecimal bd = new BigDecimal(s.next());
+			double val = bd.doubleValue();
+			array[cont] = val;
+			cont++;
+		}
+		s.close();
+		
+		histograma(array);
+	
+	}
+	
 }

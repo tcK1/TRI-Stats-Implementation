@@ -1,10 +1,13 @@
 import java.util.*;
 import java.math.*;
 import java.io.*;
+import java.text.*;
 
 class teste{
 
 	public static void main (String[] args) throws FileNotFoundException{
+		
+		int norm = 50; // Valor para normalizar o histograma
 		
 		double[] array	= new double[2000];
 				
@@ -53,37 +56,72 @@ class teste{
 		// Normaliza os dados para não printar um gráfico gigantesco
 		int[] qntdNorm = new int[qntd.length];
 		for (int j = 0; j < qntd.length; j++){
-			qntdNorm[j] = qntd[j]/50;
+			qntdNorm[j] = (qntd[j]/norm);
 		}
 
+		System.out.println("Histograma com linhas de " + norm + " de amplitude:");
+		System.out.println();
+				
 		// Começo do print do gráfico
+		// Acha a quantidade máxima de valores em um conjunto (tamanho máximo de uma coluna)
 		int[] qntdSort = Arrays.copyOf(qntdNorm, qntd.length);
 		Arrays.sort(qntdSort);
         int max = qntdSort[qntdSort.length-1];
-		System.out.println(max);
 		
-		//String saida = "";
-		
-		for (int i = max; i >= 0; i--){
-			//saida += "\n";
+		for (int i = max; i >= 1; i--){
+			
+			System.out.printf("%-6s", i*norm); // Printa a amplitude
 			
 			for (int j = 0; j < qntdNorm.length; j++){
 				if(qntdNorm[j] >= i){
-					System.out.printf(" %-7s","*");
-					//saida += "*\t"; 
-				} else System.out.printf(" %-7s"," "); 
-					//saida += " \t";
+					System.out.printf(" %-6s","#"); // "#" Se tiver valor
+				} 	else System.out.printf(" %-6s"," "); // " " Se não
 			}
 			
-			//System.out.println(saida);
-			//saida = "";
+			System.out.println();
+			
 		}
 		
-		//System.out.println(saida);
-		 System.out.printf(" %-7s%-7s%-7s%-7s%-7s%-7s%-7s%-7s%-7s%s",qntd[0],qntd[1],
-            qntd[2],qntd[3],qntd[4],qntd[5],qntd[6],qntd[7],qntd[8],qntd[9]);
+		System.out.printf("%-7s%-7d%-7d%-7d%-7d%-7d%-7d%-7d%-7d%-7d%d","Qtd ->",qntd[0],
+																				qntd[1],
+																				qntd[2],
+																				qntd[3],
+																				qntd[4],
+																				qntd[5],
+																				qntd[6],
+																				qntd[7],
+																				qntd[8],
+																				qntd[9]);
 
-		//System.out.println(qntd[0] + "\t" + qntd[1] + "\t" + qntd[2] + "\t" + qntd[3] + "\t" + qntd[4] + "\t" + qntd[5] + "\t" + qntd[6] + "\t" + qntd[7] + "\t" + qntd[8] + "\t" + qntd[9]);
+		// Define quantas casas decimais mostrar nos limites do histograma (recomendado: entre 0 e 3)
+		DecimalFormat df = new DecimalFormat("#.###");
+		
+		System.out.println();		
+		System.out.printf("%-7s%-7s%-7s%-7s%-7s%-7s%-7s%-7s%-7s%-7s%s","a   ->",
+																	df.format(particoes[0]),
+																	df.format(particoes[1]),
+																	df.format(particoes[2]),
+																	df.format(particoes[3]),
+																	df.format(particoes[4]),
+																	df.format(particoes[5]),
+																	df.format(particoes[6]),
+																	df.format(particoes[7]),
+																	df.format(particoes[8]),
+																	df.format(particoes[9]));
+		System.out.println();
+		System.out.printf("%-7s%-7s%-7s%-7s%-7s%-7s%-7s%-7s%-7s%-7s%s","b   ->",
+																	df.format(particoes[1]),
+																	df.format(particoes[2]),
+																	df.format(particoes[3]),
+																	df.format(particoes[4]),
+																	df.format(particoes[5]),
+																	df.format(particoes[6]),
+																	df.format(particoes[7]),
+																	df.format(particoes[8]),
+																	df.format(particoes[9]),
+																	df.format(particoes[10]));
+		
+		System.out.println();
 		// Fim do print do gráfico
 				
 	}

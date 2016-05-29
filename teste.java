@@ -26,8 +26,9 @@ class teste{
 								thetas[0]+(tamanhoPart*10)
 								};
 								
-		
+		// Array que vai armazenar quantos valores existem em cada partição
 		int[] qntd = new int[particoes.length-1];
+		// Populando as partições
 		for(double i : thetas){
 			if (i >= particoes[0] && i < particoes[1])   qntd[0]++;
 			if (i >= particoes[1] && i < particoes[2])   qntd[1]++;
@@ -83,6 +84,7 @@ class teste{
 																				qntd[9]);
 
 		// Define quantas casas decimais mostrar nos limites do histograma (recomendado: entre 0 e 3)
+		//                                      |||
 		DecimalFormat df = new DecimalFormat("#.###");
 		
 		System.out.println();		

@@ -283,6 +283,25 @@ class Main{
 		// Fim do print do gr�fico
 
 	}
+
+	// Recebe um inicio e fim em nanosegundos e retorna o tempo em HH:MM:SS
+	public static String duracao (double inicio, double fim){
+
+		double diferenca = (fim - inicio)/60000000000D; // Transforma para minutos
+
+		double emHoras = diferenca / 60;
+		int soHoras = (int)emHoras;
+
+		double emMinutos = ((emHoras - soHoras) * 60);
+		int soMinutos = (int)emMinutos;
+
+		int soSegundos = (int)Math.round(((emMinutos - soMinutos) * 60));
+
+		String str = (String.format("%s(h) %s(m) %s(s)", soHoras, soMinutos, soSegundos));
+
+		return(str);
+
+	}
 	// Métodos auxiliares
 
 	// Métodos funcionais
@@ -624,20 +643,14 @@ class Main{
 		double[] prob50 = new double[4];
 		double[] prob100 = new double[4];
 
-		// Notas do aluno 5
-		double thetaP10  = bissecaoProva(p10V, provaResp(p10V, theta[4]));
-		double thetaP20  = bissecaoProva(p20V, provaResp(p20V, theta[4]));
-		double thetaP50  = bissecaoProva(p50V, provaResp(p50V, theta[4]));
-		double thetaP100 = bissecaoProva(p100V, provaResp(p100V, theta[4]));
-
 		// Para um numero consideravel de vezes, ve se o aluno "t"[0 a 3] for melhor que o aluno 5[4]
 		Thread thr1 = new Thread() {
 			public void run() {
 				for (int i = 0; i < N; i++){
-					if(thetaP10  < bissecaoProva(p10V, provaResp(p10V, theta[0]))) prob10[0]++;
-					if(thetaP20  < bissecaoProva(p20V, provaResp(p20V, theta[0]))) prob20[0]++;
-					if(thetaP50  < bissecaoProva(p50V, provaResp(p50V, theta[0]))) prob50[0]++;
-					if(thetaP100 < bissecaoProva(p100V, provaResp(p100V, theta[0]))) prob100[0]++;
+					if(bissecaoProva(p10V,  provaResp(p10V, theta[4]))  < bissecaoProva(p10V, provaResp(p10V, theta[0]))) prob10[0]++;
+					if(bissecaoProva(p20V,  provaResp(p20V, theta[4]))  < bissecaoProva(p20V, provaResp(p20V, theta[0]))) prob20[0]++;
+					if(bissecaoProva(p50V,  provaResp(p50V, theta[4]))  < bissecaoProva(p50V, provaResp(p50V, theta[0]))) prob50[0]++;
+					if(bissecaoProva(p100V, provaResp(p100V, theta[4])) < bissecaoProva(p100V, provaResp(p100V, theta[0]))) prob100[0]++;
 				}
 			}
 		};
@@ -645,10 +658,10 @@ class Main{
 		Thread thr2 = new Thread() {
 			public void run() {
 				for (int i = 0; i < N; i++){
-					if(thetaP10  < bissecaoProva(p10V, provaResp(p10V, theta[1]))) prob10[1]++;
-					if(thetaP20  < bissecaoProva(p20V, provaResp(p20V, theta[1]))) prob20[1]++;
-					if(thetaP50  < bissecaoProva(p50V, provaResp(p50V, theta[1]))) prob50[1]++;
-					if(thetaP100 < bissecaoProva(p100V, provaResp(p100V, theta[1]))) prob100[1]++;
+					if(bissecaoProva(p10V,  provaResp(p10V, theta[4]))  < bissecaoProva(p10V, provaResp(p10V, theta[1]))) prob10[1]++;
+					if(bissecaoProva(p20V,  provaResp(p20V, theta[4]))  < bissecaoProva(p20V, provaResp(p20V, theta[1]))) prob20[1]++;
+					if(bissecaoProva(p50V,  provaResp(p50V, theta[4]))  < bissecaoProva(p50V, provaResp(p50V, theta[1]))) prob50[1]++;
+					if(bissecaoProva(p100V, provaResp(p100V, theta[4])) < bissecaoProva(p100V, provaResp(p100V, theta[1]))) prob100[1]++;
 				}
 			}
 		};
@@ -656,10 +669,10 @@ class Main{
 		Thread thr3 = new Thread() {
 			public void run() {
 				for (int i = 0; i < N; i++){
-					if(thetaP10  < bissecaoProva(p10V, provaResp(p10V, theta[2]))) prob10[2]++;
-					if(thetaP20  < bissecaoProva(p20V, provaResp(p20V, theta[2]))) prob20[2]++;
-					if(thetaP50  < bissecaoProva(p50V, provaResp(p50V, theta[2]))) prob50[2]++;
-					if(thetaP100 < bissecaoProva(p100V, provaResp(p100V, theta[2]))) prob100[2]++;
+					if(bissecaoProva(p10V,  provaResp(p10V, theta[4]))  < bissecaoProva(p10V, provaResp(p10V, theta[2]))) prob10[2]++;
+					if(bissecaoProva(p20V,  provaResp(p20V, theta[4]))  < bissecaoProva(p20V, provaResp(p20V, theta[2]))) prob20[2]++;
+					if(bissecaoProva(p50V,  provaResp(p50V, theta[4]))  < bissecaoProva(p50V, provaResp(p50V, theta[2]))) prob50[2]++;
+					if(bissecaoProva(p100V, provaResp(p100V, theta[4])) < bissecaoProva(p100V, provaResp(p100V, theta[2]))) prob100[2]++;
 				}
 			}
 		};
@@ -667,10 +680,10 @@ class Main{
 		Thread thr4 = new Thread() {
 			public void run() {
 				for (int i = 0; i < N; i++){
-					if(thetaP10  < bissecaoProva(p10V, provaResp(p10V, theta[3]))) prob10[3]++;
-					if(thetaP20  < bissecaoProva(p20V, provaResp(p20V, theta[3]))) prob20[3]++;
-					if(thetaP50  < bissecaoProva(p50V, provaResp(p50V, theta[3]))) prob50[3]++;
-					if(thetaP100 < bissecaoProva(p100V, provaResp(p100V, theta[3]))) prob100[3]++;
+					if(bissecaoProva(p10V,  provaResp(p10V, theta[4]))  < bissecaoProva(p10V, provaResp(p10V, theta[3]))) prob10[3]++;
+					if(bissecaoProva(p20V,  provaResp(p20V, theta[4]))  < bissecaoProva(p20V, provaResp(p20V, theta[3]))) prob20[3]++;
+					if(bissecaoProva(p50V,  provaResp(p50V, theta[4]))  < bissecaoProva(p50V, provaResp(p50V, theta[3]))) prob50[3]++;
+					if(bissecaoProva(p100V, provaResp(p100V, theta[4])) < bissecaoProva(p100V, provaResp(p100V, theta[3]))) prob100[3]++;
 				}
 			}
 		};
@@ -861,13 +874,15 @@ class Main{
 		probList.add(Arrays.toString(intervalo100).split("[\\[\\]]")[1].split(", "));
 		escreveArquivo("out/II3.txt", probList);
 
+		DecimalFormat df = new DecimalFormat("#.##");
+
 		System.out.println("Limite de confianca em provas de 10, 20, 50 e 100 questoes para os 5 alunos:");
 		System.out.println("Linha -> Prova[10, 20, 50, 100]");
 		System.out.println("Coluna -> Aluno[1(Inf-Sup), 2(Inf-Sup), 3(Inf-Sup), 4(Inf-Sup), 5(Inf-Sup)]");
-		System.out.println(intervalo10[0] + " - " + intervalo10[1] + " , " + intervalo10[2] + " - " + intervalo10[3] + " , " + intervalo10[4] + " - " + intervalo10[5] + " , " + intervalo10[6] + " - " + intervalo10[7] + " , " + intervalo10[8] + " - " + intervalo10[9]);
-		System.out.println(intervalo20[0] + " - " + intervalo20[1] + " , " + intervalo20[2] + " - " + intervalo20[3] + " , " + intervalo20[4] + " - " + intervalo20[5] + " , " + intervalo20[6] + " - " + intervalo20[7] + " , " + intervalo20[8] + " - " + intervalo20[9]);
-		System.out.println(intervalo50[0] + " - " + intervalo50[1] + " , " + intervalo50[2] + " - " + intervalo50[3] + " , " + intervalo50[4] + " - " + intervalo50[5] + " , " + intervalo50[6] + " - " + intervalo50[7] + " , " + intervalo50[8] + " - " + intervalo50[9]);
-		System.out.println(intervalo100[0] + " - " + intervalo100[1] + " , " + intervalo100[2] + " - " + intervalo100[3] + " , " + intervalo100[4] + " - " + intervalo100[5] + " , " + intervalo100[6] + " - " + intervalo100[7] + " , " + intervalo100[8] + " - " + intervalo100[9]);
+		System.out.println(df.format(intervalo10[0])  + " - " + df.format(intervalo10[1])  + " , " + df.format(intervalo10[2])  + " - " + df.format(intervalo10[3])  + " , " + df.format(intervalo10[4])  + " - " + df.format(intervalo10[5])  + " , " + df.format(intervalo10[6])  + " - " + df.format(intervalo10[7])  + " , " + df.format(intervalo10[8])  + " - " + df.format(intervalo10[9]));
+		System.out.println(df.format(intervalo20[0])  + " - " + df.format(intervalo20[1])  + " , " + df.format(intervalo20[2])  + " - " + df.format(intervalo20[3])  + " , " + df.format(intervalo20[4])  + " - " + df.format(intervalo20[5])  + " , " + df.format(intervalo20[6])  + " - " + df.format(intervalo20[7])  + " , " + df.format(intervalo20[8])  + " - " + df.format(intervalo20[9]));
+		System.out.println(df.format(intervalo50[0])  + " - " + df.format(intervalo50[1])  + " , " + df.format(intervalo50[2])  + " - " + df.format(intervalo50[3])  + " , " + df.format(intervalo50[4])  + " - " + df.format(intervalo50[5])  + " , " + df.format(intervalo50[6])  + " - " + df.format(intervalo50[7])  + " , " + df.format(intervalo50[8])  + " - " + df.format(intervalo50[9]));
+		System.out.println(df.format(intervalo100[0]) + " - " + df.format(intervalo100[1]) + " , " + df.format(intervalo100[2]) + " - " + df.format(intervalo100[3]) + " , " + df.format(intervalo100[4]) + " - " + df.format(intervalo100[5]) + " , " + df.format(intervalo100[6]) + " - " + df.format(intervalo100[7]) + " , " + df.format(intervalo100[8]) + " - " + df.format(intervalo100[9]));
 
 	}
 	// Métodos funcionais
@@ -882,7 +897,7 @@ class Main{
 		long inicio = System.nanoTime(); // Tempo incial de execução do programa
 
 		// Lendo o arquivo de questões e preenchendo lista de parâmetros
-		long tempo_inicial = System.nanoTime(); // Informações de duração dos calculos
+		long tempoInicial = System.nanoTime(); // Informações de duração dos calculos
 		Scanner s = new Scanner(new File("res/questoes.txt"));
 		int cont = 0;
 		while(s.hasNext()) {
@@ -895,9 +910,7 @@ class Main{
 		}
 		s.close();
 		// Fim da leitura
-
-		double diferenca = (System.nanoTime() - tempo_inicial)/1e6;
-		System.out.println("Tempo de leitura do arquivo 'questoes.txt' em nanosegundos: " + diferenca);
+		System.out.println("Tempo de leitura do arquivo 'questoes.txt': " + duracao(tempoInicial, System.nanoTime()));
 
 		// Le o parametro de quantas interações serão feitas para os calculos
 		if(args.length == 0) N = 10;
@@ -906,29 +919,26 @@ class Main{
 		// Chamada de Métodos da primeira parte
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando melhor aluno...");
-		tempo_inicial = System.nanoTime();
+		tempoInicial = System.nanoTime();
 		melhorAluno(); // I
-		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
-		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
+		System.out.println("Duração do calculo: " + duracao(tempoInicial, System.nanoTime()));
 
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando melhor prova...");
-		tempo_inicial = System.nanoTime();
+		tempoInicial = System.nanoTime();
 		melhorProva(); // II
-		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
-		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
+		System.out.println("Duração do calculo: " + duracao(tempoInicial, System.nanoTime()));
 
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando intervalo de confianca...");
-		tempo_inicial = System.nanoTime();
+		tempoInicial = System.nanoTime();
 		intervaloDeConfianca(); // III
-		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
-		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
+		System.out.println("Duração do calculo: " + duracao(tempoInicial, System.nanoTime()));
 
 		System.out.println("**********************************************************************");
 
 		// Lendo o arquivo de respostas e populando array bidimensional com os acertos/erros
-		tempo_inicial = System.nanoTime();
+		tempoInicial = System.nanoTime();
 		Scanner s2 = new Scanner(new File("res/respostas.txt"));
 		int aluno = 0;
 		int resposta = 0;
@@ -945,36 +955,31 @@ class Main{
 		}
 		s2.close();
 		// Fim da leitura
-		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
-		System.out.println("Tempo de leitura do arquivo 'respostas.txt' em nanosegundos: " + diferenca);
+		System.out.println("Tempo de leitura do arquivo 'respostas.txt': " + duracao(tempoInicial, System.nanoTime()));
 
 		/// Chamando métodos da segunda parte
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando estimador do Theta...");
-		tempo_inicial = System.nanoTime();
+		tempoInicial = System.nanoTime();
 		estimadorPontual(); // IV
-		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
-		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
+		System.out.println("Duração do calculo: " + duracao(tempoInicial, System.nanoTime()));
 
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando melhor aluno usando a Habilidade...");
-		tempo_inicial = System.nanoTime();
+		tempoInicial = System.nanoTime();
 		melhorAlunoHab(); // V
-		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
-		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
+		System.out.println("Duração do calculo: " + duracao(tempoInicial, System.nanoTime()));
 
 		System.out.println("**********************************************************************");
 		System.out.println("Calculando intervalo de confianca da Habilidade...");
-		tempo_inicial = System.nanoTime();
+		tempoInicial = System.nanoTime();
 		intervaloDeConfiancaHab(); // VI
-		diferenca = (System.nanoTime() - tempo_inicial)/1e6;
-		System.out.println("Duração do calculo em nanosegundos: " + diferenca);
+		System.out.println("Duração do calculo: " + duracao(tempoInicial, System.nanoTime()));
 
 		System.out.println("**********************************************************************");
 
 		// Tempo final da execução do programa
-		diferenca = (System.nanoTime() - inicio)/1e6;
-		System.out.println("Duracao da execucao do programa: " + diferenca);
+		System.out.println("Duracao da execucao do programa: " + duracao(inicio, System.nanoTime()));
 
   }
 }

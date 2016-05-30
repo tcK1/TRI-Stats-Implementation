@@ -125,7 +125,8 @@ class Main{
 
 			// Derivada
 			for (int i = 0; i < a.size(); i++){
-				aux += (a.get(i)*(2*respostas[al][i]-1)*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))/(((Math.pow(Math.E, (a.get(i)*(t-b.get(i)))))+1)*((respostas[al][i]*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))-respostas[al][i]+1));
+				//aux += (a.get(i)*(2*respostas[al][i]-1)*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))/(((Math.pow(Math.E, (a.get(i)*(t-b.get(i)))))+1)*((respostas[al][i]*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))-respostas[al][i]+1));
+				aux += a.get(i)*((respostas[al][i]-1)*Math.exp(a.get(i)*(t-b.get(i)))+respostas[al][i])/(Math.exp(a.get(i)*(t-b.get(i)))+1);
 			}
 
 			bis /= 2;
@@ -155,7 +156,8 @@ class Main{
 
 			// Derivada
 			for (int i = 0; i < quest.length; i++){
-				aux += (a.get(quest[i])*(2*resp[i]-1)*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))/(((Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i])))))+1)*((resp[i]*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))-resp[i]+1));
+				//aux += (a.get(quest[i])*(2*resp[i]-1)*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))/(((Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i])))))+1)*((resp[i]*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))-resp[i]+1));
+				aux += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(t-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(t-b.get(quest[i])))+1);
 			}
 
 			bis /= 2;
@@ -888,13 +890,25 @@ class Main{
 	// Métodos funcionais
 
   public static void main (String[] args) throws FileNotFoundException{
+
+		long inicio = System.nanoTime(); // Tempo incial de execução do programa
+
+		// Le o parametro de quantas interações serão feitas para os calculos
+		if(args.length == 0) N = 10;
+		else {
+			try{
+				N = Integer.parseInt(args[0]);
+			} catch (NumberFormatException ez){
+				System.out.println("Insira um numero inteiro maior ou igual a 2");
+				return;
+			}
+		}
+
 		System.out.println("**********************************************************************");
 		System.out.println("Teoria de Resposta ao Item");
 		System.out.println("por Kaic Bastidas e Matheus Canon");
 		System.out.println("Primeiro semestre de 2016");
 		System.out.println("**********************************************************************");
-
-		long inicio = System.nanoTime(); // Tempo incial de execução do programa
 
 		// Lendo o arquivo de questões e preenchendo lista de parâmetros
 		long tempoInicial = System.nanoTime(); // Informações de duração dos calculos
@@ -911,10 +925,6 @@ class Main{
 		s.close();
 		// Fim da leitura
 		System.out.println("Tempo de leitura do arquivo 'questoes.txt': " + duracao(tempoInicial, System.nanoTime()));
-
-		// Le o parametro de quantas interações serão feitas para os calculos
-		if(args.length == 0) N = 10;
-		else N = Integer.parseInt(args[0]);
 
 		// Chamada de Métodos da primeira parte
 		System.out.println("**********************************************************************");

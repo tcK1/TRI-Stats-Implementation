@@ -114,62 +114,62 @@ class Main{
 	// Encontrar o maximo da função por bisseção (para um aluno "al")
 	public static double bissecao(int al){
 
-		double t = 0; // Theta do aluno
-		double bis = 5; // Range que o theta pode tomar
-		double aux = 1; // Valor inicial da somatoria (para poder iterar o for)
+		double epsilon = 0.00001; // Valor minimo de diferença entre os dois limites
+		double esq, dir, m, y_m, y_esq;
 
-		// Para um numero z de iterações maximas, tenta encontrar o valor em que a equação aproxima-se a zero
-		for (int z = 0; z < 100 || aux == 0; z++) {
+		esq = -5; dir = 5;
 
-			aux = 0;
+		while ((dir-esq) > epsilon){ // Até a diferença dar um número menor que epsilon
+		  m = (esq+dir)/2; // Valor do meio
 
-			// Derivada
+			y_m = 0;
+			y_esq = 0;
+
+			// Derivada (Somatória)
 			for (int i = 0; i < a.size(); i++){
-				//aux += (a.get(i)*(2*respostas[al][i]-1)*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))/(((Math.pow(Math.E, (a.get(i)*(t-b.get(i)))))+1)*((respostas[al][i]*(Math.pow(Math.E, (a.get(i)*(t-b.get(i))))))-respostas[al][i]+1));
-				aux += a.get(i)*((respostas[al][i]-1)*Math.exp(a.get(i)*(t-b.get(i)))+respostas[al][i])/(Math.exp(a.get(i)*(t-b.get(i)))+1);
+				y_m += a.get(i)*((respostas[al][i]-1)*Math.exp(a.get(i)*(m-b.get(i)))+respostas[al][i])/(Math.exp(a.get(i)*(m-b.get(i)))+1);
+				y_esq += a.get(i)*((respostas[al][i]-1)*Math.exp(a.get(i)*(esq-b.get(i)))+respostas[al][i])/(Math.exp(a.get(i)*(esq-b.get(i)))+1);
 			}
 
-			bis /= 2;
-			t = aux > 0 ? t + bis : t - bis;
+		  if ((y_m > 0 && y_esq < 0) || (y_m < 0 && y_esq > 0)) dir = m; // f(a) e f(m) tem sinais diferentes
+		  else esq = m; // f(a) e f(m) mesmos sinais
 
-			//System.out.println("Aux: " + aux + " | " + "Bis: " + bis + " | " + "T: " + t + " | " + "Al: " + al);
-
-			if(aux == 0) break;
-
+		  //System.out.println("Novo Intervalo: [" + esq + " .. " + dir + "]"); // Progresso
 		}
 
-		return t;
+		//System.out.println("Solução aproximada = " + (esq+dir)/2 );
+		return (esq+dir)/2; // Retorna o meio
 
 	}
 
 	// Encontrar o maximo da função por bisseção (para uma prova [questões e respostas])
 	public static double bissecaoProva(Integer[] quest, Integer[] resp){
 
-		double t = 0; // Theta do aluno
-		double bis = 5; // Range que o theta pode tomar
-		double aux = 1; // Valor inicial da somatoria (para poder iterar o for)
+		double epsilon = 0.00001; // Valor minimo de diferença entre os dois limites
+		double esq, dir, m, y_m, y_esq;
 
-		// Para um numero z de iterações maximas, tenta encontrar o valor em que a equação aproxima-se a zero
-		for (int z = 0; z < 100 || aux == 0; z++) {
+		esq = -5; dir = 5;
 
-			aux = 0;
+		while ((dir-esq) > epsilon){ // Até a diferença dar um número menor que epsilon
+			m = (esq+dir)/2; // Valor do meio
 
-			// Derivada
+			y_m = 0;
+			y_esq = 0;
+
+			// Derivada (Somatória)
 			for (int i = 0; i < quest.length; i++){
-				//aux += (a.get(quest[i])*(2*resp[i]-1)*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))/(((Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i])))))+1)*((resp[i]*(Math.pow(Math.E, (a.get(quest[i])*(t-b.get(quest[i]))))))-resp[i]+1));
-				aux += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(t-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(t-b.get(quest[i])))+1);
+				y_m += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+1);
+				y_esq += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+1);
 			}
 
-			bis /= 2;
-			t = aux > 0 ? t + bis : t - bis;
+			if ((y_m > 0 && y_esq < 0) || (y_m < 0 && y_esq > 0)) dir = m; // f(a) e f(m) tem sinais diferentes
+			else esq = m; // f(a) e f(m) mesmos sinais
 
-			//System.out.println("Aux: " + aux + " | " + "Bis: " + bis + " | " + "T: " + t);
-
-			if(aux == 0) break;
-
+			//System.out.println("Novo Intervalo: [" + esq + " .. " + dir + "]"); // Progresso
 		}
 
-		return t;
+		//System.out.println("Solução aproximada = " + (esq+dir)/2 );
+		return (esq+dir)/2; // Retorna o meio
 
 	}
 

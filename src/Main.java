@@ -114,101 +114,6 @@ class Main{
 	// Encontrar o maximo da função por bisseção (para um aluno "al")
 	public static double bissecao(int al){
 
-		double epsilon = 0.00001; // Valor minimo de diferença entre os dois limites
-		double esq, dir, m, y_m, y_esq;
-
-		esq = -5; dir = 5;
-
-		y_m = 0;
-		y_esq = 0;
-
-		boolean tudoZero = true;
-		for (int i = 0; i < respostas[al].length; i++){
-			if (respostas[al][i] != 0) tudoZero = false;
-		}
-		if (tudoZero) {
-			System.out.println(Arrays.toString(respostas[al]));
-		}
-
-
-		while ((dir-esq) > epsilon){ // Até a diferença dar um número menor que epsilon
-		  m = (esq+dir)/2; // Valor do meio
-
-			y_m = 0;
-			y_esq = 0;
-
-			// Derivada (Somatória)
-			for (int i = 0; i < a.size(); i++){
-				y_m += a.get(i)*((respostas[al][i]-1)*Math.exp(a.get(i)*(m-b.get(i)))+respostas[al][i])/(Math.exp(a.get(i)*(m-b.get(i)))+1);
-				y_esq += a.get(i)*((respostas[al][i]-1)*Math.exp(a.get(i)*(esq-b.get(i)))+respostas[al][i])/(Math.exp(a.get(i)*(esq-b.get(i)))+1);
-			}
-
-		  if ((y_m > 0 && y_esq < 0) || (y_m < 0 && y_esq > 0)) dir = m; // f(a) e f(m) tem sinais diferentes
-		  else esq = m; // f(a) e f(m) mesmos sinais
-
-		  //System.out.println("Novo Intervalo: [" + esq + " .. " + dir + "]"); // Progresso
-		}
-
-		//System.out.println("Solução aproximada = " + (esq+dir)/2 );
-		return (esq+dir)/2; // Retorna o meio
-
-	}
-
-	// Encontrar o maximo da função por bisseção (para uma prova [questões e respostas])
-	public static double bissecaoProvaT(Integer[] quest, Integer[] resp){
-
-		double epsilon = 0.00001; // Valor minimo de diferença entre os dois limites
-		double esq, dir, m, y_m, y_esq;
-
-		esq = -5; dir = 5;
-
-		y_m = 0;
-		y_esq = 0;
-
-		while ((dir-esq) > epsilon){ // Até a diferença dar um número menor que epsilon
-			m = (esq+dir)/2; // Valor do meio
-
-			y_m = 0;
-			y_esq = 0;
-
-			// Derivada (Somatória)
-			for (int i = 0; i < quest.length; i++){
-
-				y_m += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+1);
-				y_esq += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+1);
-
-				//System.out.println(Arrays.toString(resp));
-				//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
-
-			}
-
-			if ((y_m > 0 && y_esq < 0) || (y_m < 0 && y_esq > 0)) dir = m; // f(a) e f(m) tem sinais diferentes
-			else esq = m; // f(a) e f(m) mesmos sinais
-
-			//System.out.println("Novo Intervalo: [" + esq + " .. " + dir + "]");
-			//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
-
-
-		}
-
-		//if (((esq+dir)/2) > 4.8){
-		//	System.out.println(Arrays.toString(resp));
-		//}
-
-		//System.out.println(Arrays.toString(resp));
-		//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
-		//System.out.println("Limites: [" + esq + " .. " + dir + "]");
-		//System.out.println("Solução aproximada = " + (esq+dir)/2 );
-
-
-		//System.out.println("Solução aproximada = " + (esq+dir)/2 );
-		return (esq+dir)/2; // Retorna o meio
-
-	}
-
-	// Encontrar o maximo da função por bisseção (para uma prova [questões e respostas])
-	public static double bissecaoProva(Integer[] quest, Integer[] resp){
-
 		double tol = 0.0001;
 		double esq, dir, m, y_m, y_esq;
 
@@ -223,12 +128,11 @@ class Main{
 			y_esq = 0;
 
 			// Derivada (Somatória)
-			for (int i = 0; i < quest.length; i++){
+			for (int i = 0; i < a.size(); i++){
 
-				y_m += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+1);
-				y_esq += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+1);
+				y_m += a.get(i)*((respostas[al][i]-1)*Math.exp(a.get(i)*(m-b.get(i)))+respostas[al][i])/(Math.exp(a.get(i)*(m-b.get(i)))+1);
+				y_esq += a.get(i)*((respostas[al][i]-1)*Math.exp(a.get(i)*(esq-b.get(i)))+respostas[al][i])/(Math.exp(a.get(i)*(esq-b.get(i)))+1);
 
-				//System.out.println(Arrays.toString(resp));
 				//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
 
 			}
@@ -255,8 +159,58 @@ class Main{
 		//System.out.println("Limites: [" + esq + " .. " + dir + "]");
 		//System.out.println("Solução aproximada = " + (esq+dir)/2 );
 
+		return (esq+dir)/2; // Retorna o meio
 
+	}
+
+	// Encontrar o maximo da função por bisseção (para uma prova [questões e respostas])
+	public static double bissecaoProva(Integer[] quest, Integer[] resp){
+
+		double tol = 0.0001;
+		double esq, dir, m, y_m, y_esq;
+
+		esq = -5; dir = 5;
+
+		int n = 1;
+
+		while (n < N){ // Até a diferença dar um número menor que epsilon
+			m = (esq+dir)/2; // Valor do meio
+
+			y_m = 0;
+			y_esq = 0;
+
+			// Derivada (Somatória)
+			for (int i = 0; i < quest.length; i++){
+
+				y_m += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+1);
+				y_esq += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+1);
+
+				//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
+
+			}
+
+			if (y_m == 0 || (dir-esq)/2 < tol){
+				//System.out.println(Arrays.toString(resp));
+				//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
+				//System.out.println("Limites: [" + esq + " .. " + dir + "]");
+				//System.out.println("Solução aproximada = " + (esq+dir)/2 );
+				return (esq+dir)/2;
+			} else {
+				if (Math.pow(y_m, y_esq) >= 0) esq = m; // f(a) e f(m) tem sinais diferentes
+				else dir = m; // f(a) e f(m) mesmos sinais
+			}
+
+			//System.out.println("Novo Intervalo: [" + esq + " .. " + dir + "]");
+			//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
+
+			n++;
+		}
+
+		//System.out.println(Arrays.toString(resp));
+		//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
+		//System.out.println("Limites: [" + esq + " .. " + dir + "]");
 		//System.out.println("Solução aproximada = " + (esq+dir)/2 );
+
 		return (esq+dir)/2; // Retorna o meio
 
 	}
@@ -285,7 +239,7 @@ class Main{
 
 		// Array que vai armazenar quantos valores existem em cada parti��o
 		int[] qntd = new int[particoes.length-1];
-		// Populando as parti��es
+		// Populando as partições
 		for(double i : thetas){
 			if (i >= particoes[0] && i < particoes[1])   qntd[0]++;
 			if (i >= particoes[1] && i < particoes[2])   qntd[1]++;
@@ -392,6 +346,25 @@ class Main{
 		return(str);
 
 	}
+
+	public static double media (Integer[] notas){
+
+		double sum = 0;
+		for (double a : notas) sum += a;
+		//System.out.println("Media: " + sum/(double)notas.length);
+		return sum/(double)notas.length;
+
+	}
+
+	public static double variancia (Integer[] notas){
+
+		double med = media(notas);
+		double temp = 0;
+    for(double a : notas) temp += Math.pow((a-med), 2);
+		//System.out.println("Variancia: " + temp	/(double)notas.length);
+		return temp/(double)notas.length;
+
+	}
 	// Métodos auxiliares
 
 	// Métodos funcionais
@@ -419,19 +392,13 @@ class Main{
 		double[] prob50 = new double[4];
 		double[] prob100 = new double[4];
 
-		// Notas do aluno 5
-		int notaP10 = nota(p10, theta[4]);
-		int notaP20 = nota(p20, theta[4]);
-		int notaP50 = nota(p50, theta[4]);
-		int notaP100 = nota(p100, theta[4]);
-
 		// Para um numero consideravel de vezes, ve se o aluno "t"[0 a 3] for melhor que o aluno 5[4]
 		for(int i = 0; i < N; i++){
 			for (int t = 0; t < 4; t++){
-				if(notaP10 < nota(p10, theta[t])) prob10[t]++;
-				if(notaP20 < nota(p20, theta[t])) prob20[t]++;
-				if(notaP50 < nota(p50, theta[t])) prob50[t]++;
-				if(notaP100 < nota(p100, theta[t])) prob100[t]++;
+				if(nota(p10, theta[4]) < nota(p10, theta[t])) prob10[t]++;
+				if(nota(p20, theta[4]) < nota(p20, theta[t])) prob20[t]++;
+				if(nota(p50, theta[4]) < nota(p50, theta[t])) prob50[t]++;
+				if(nota(p100, theta[4]) < nota(p100, theta[t])) prob100[t]++;
 			}
 		}
 
@@ -978,7 +945,237 @@ class Main{
 		System.out.println(df.format(intervalo50[0])  + " - " + df.format(intervalo50[1])  + " , " + df.format(intervalo50[2])  + " - " + df.format(intervalo50[3])  + " , " + df.format(intervalo50[4])  + " - " + df.format(intervalo50[5])  + " , " + df.format(intervalo50[6])  + " - " + df.format(intervalo50[7])  + " , " + df.format(intervalo50[8])  + " - " + df.format(intervalo50[9]));
 		System.out.println(df.format(intervalo100[0]) + " - " + df.format(intervalo100[1]) + " , " + df.format(intervalo100[2]) + " - " + df.format(intervalo100[3]) + " , " + df.format(intervalo100[4]) + " - " + df.format(intervalo100[5]) + " , " + df.format(intervalo100[6]) + " - " + df.format(intervalo100[7]) + " , " + df.format(intervalo100[8]) + " - " + df.format(intervalo100[9]));
 
-		System.out.println(Arrays.toString(notas10[0]));
+	}
+
+	public static void intervaloDeConfiancaNormal(){
+
+		/*** Mesmo procedimento de melhor prova ***/
+		// Seleciona a prova de "x" questões onde o aluno "a" é melhor que o "b"
+		Integer p10V[] = prova(10, theta[4], theta[3]);
+		Integer p20V[] = prova(20, theta[4], theta[3]);
+		Integer p50V[] = prova(50, theta[4], theta[3]);
+		Integer p100V[] = prova(100, theta[4], theta[3]);
+		/*** Mesmo procedimento de melhor prova ***/
+
+		Integer[][] notas10  = new Integer[5][N];
+		Integer[][] notas20  = new Integer[5][N];
+		Integer[][] notas50  = new Integer[5][N];
+		Integer[][] notas100 = new Integer[5][N];
+
+		// Para um numero consideravel de vezes, calcula quanto os alunos tiraram
+		Thread thr1 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					notas10[0][i]  = nota(p10V, theta[0]);
+					notas20[0][i]  = nota(p20V, theta[0]);
+					notas50[0][i]  = nota(p50V, theta[0]);
+					notas100[0][i] = nota(p100V, theta[0]);
+				}
+			}
+		};
+
+		Thread thr2 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					notas10[1][i]  = nota(p10V, theta[1]);
+					notas20[1][i]  = nota(p20V, theta[1]);
+					notas50[1][i]  = nota(p50V, theta[1]);
+					notas100[1][i] = nota(p100V, theta[1]);
+				}
+			}
+		};
+
+		Thread thr3 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					notas10[2][i]  = nota(p10V, theta[2]);
+					notas20[2][i]  = nota(p20V, theta[2]);
+					notas50[2][i]  = nota(p50V, theta[2]);
+					notas100[2][i] = nota(p100V, theta[2]);
+				}
+			}
+		};
+
+		Thread thr4 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					notas10[3][i]  = nota(p10V, theta[3]);
+					notas20[3][i]  = nota(p20V, theta[3]);
+					notas50[3][i]  = nota(p50V, theta[3]);
+					notas100[3][i] = nota(p100V, theta[3]);
+				}
+			}
+		};
+
+		Thread thr5 = new Thread() {
+			public void run() {
+				for (int i = 0; i < N; i++){
+					notas10[4][i]  = nota(p10V, theta[4]);
+					notas20[4][i]  = nota(p20V, theta[4]);
+					notas50[4][i]  = nota(p50V, theta[4]);
+					notas100[4][i] = nota(p100V, theta[4]);
+				}
+			}
+		};
+
+		thr1.start();
+		thr2.start();
+		thr3.start();
+		thr4.start();
+		thr5.start();
+
+		try {
+			thr1.join();
+			thr2.join();
+			thr3.join();
+			thr4.join();
+			thr5.join();
+		} catch (InterruptedException ex) {
+			System.out.println(ex.getMessage());
+		}
+
+		double[] medias10 = new double[5];
+		double[] medias20 = new double[5];
+		double[] medias50 = new double[5];
+		double[] medias100 = new double[5];
+
+		double[] variancias10 = new double[5];
+		double[] variancias20 = new double[5];
+		double[] variancias50 = new double[5];
+		double[] variancias100 = new double[5];
+
+		Thread thr11 = new Thread() {
+			public void run() {
+				medias10[0] = media(notas10[0]);
+				medias20[0] = media(notas20[0]);
+				medias50[0] = media(notas50[0]);
+				medias100[0] = media(notas100[0]);
+
+				variancias10[0] = variancia(notas10[0]);
+				variancias20[0] = variancia(notas20[0]);
+				variancias50[0] = variancia(notas50[0]);
+				variancias100[0] = variancia(notas100[0]);
+			}
+		};
+
+		Thread thr22 = new Thread() {
+			public void run() {
+				medias10[1] = media(notas10[1]);
+				medias20[1] = media(notas20[1]);
+				medias50[1] = media(notas50[1]);
+				medias100[1] = media(notas100[1]);
+
+				variancias10[1] = variancia(notas10[1]);
+				variancias20[1] = variancia(notas20[1]);
+				variancias50[1] = variancia(notas50[1]);
+				variancias100[1] = variancia(notas100[1]);
+			}
+		};
+
+		Thread thr33 = new Thread() {
+			public void run() {
+				medias10[2] = media(notas10[2]);
+				medias20[2] = media(notas20[2]);
+				medias50[2] = media(notas50[2]);
+				medias100[2] = media(notas100[2]);
+
+				variancias10[2] = variancia(notas10[2]);
+				variancias20[2] = variancia(notas20[2]);
+				variancias50[2] = variancia(notas50[2]);
+				variancias100[2] = variancia(notas100[2]);
+			}
+		};
+
+		Thread thr44 = new Thread() {
+			public void run() {
+				medias10[3] = media(notas10[3]);
+				medias20[3] = media(notas20[3]);
+				medias50[3] = media(notas50[3]);
+				medias100[3] = media(notas100[3]);
+
+				variancias10[3] = variancia(notas10[3]);
+				variancias20[3] = variancia(notas20[3]);
+				variancias50[3] = variancia(notas50[3]);
+				variancias100[3] = variancia(notas100[3]);
+			}
+		};
+
+		Thread thr55 = new Thread() {
+			public void run() {
+				medias10[4] = media(notas10[4]);
+				medias20[4] = media(notas20[4]);
+				medias50[4] = media(notas50[4]);
+				medias100[4] = media(notas100[4]);
+
+				variancias10[4] = variancia(notas10[4]);
+				variancias20[4] = variancia(notas20[4]);
+				variancias50[4] = variancia(notas50[4]);
+				variancias100[4] = variancia(notas100[4]);
+			}
+		};
+
+		thr11.start();
+		thr22.start();
+		thr33.start();
+		thr44.start();
+		thr55.start();
+
+		try {
+			thr11.join();
+			thr22.join();
+			thr33.join();
+			thr44.join();
+			thr55.join();
+		} catch (InterruptedException ex) {
+			System.out.println(ex.getMessage());
+		}
+
+		// Dado a tabela da normal padrão para 5% e 95%
+		double limiteSuperior = 1.65;
+		double limiteInferior = -1.65;
+
+		// Acha os valores dos limites para cada prova e para cada aluno
+		double[] intervalo10 = new double[10];
+		double[] intervalo20 = new double[10];
+		double[] intervalo50 = new double[10];
+		double[] intervalo100 = new double[10];
+
+		for(int i = 0; i < 9; i=i+2){
+			intervalo10[i]   = (limiteInferior*Math.sqrt(variancias10[i/2]))+medias10[i/2];
+			intervalo10[i+1] = (limiteSuperior*Math.sqrt(variancias10[i/2]))+medias10[i/2];
+
+			intervalo20[i]   = (limiteInferior*Math.sqrt(variancias20[i/2]))+medias20[i/2];
+			intervalo20[i+1] = (limiteSuperior*Math.sqrt(variancias20[i/2]))+medias20[i/2];
+
+			intervalo50[i]   = (limiteInferior*Math.sqrt(variancias50[i/2]))+medias50[i/2];
+			intervalo50[i+1] = (limiteSuperior*Math.sqrt(variancias50[i/2]))+medias50[i/2];
+
+			intervalo100[i]   = (limiteInferior*Math.sqrt(variancias100[i/2]))+medias100[i/2];
+			intervalo100[i+1] = (limiteSuperior*Math.sqrt(variancias100[i/2]))+medias100[i/2];
+		}
+		// Fim do calculo
+
+		// Escreve o arquivo
+		List<String[]> probList = new ArrayList<String[]>();
+		probList.add(Arrays.toString(intervalo10).split("[\\[\\]]")[1].split(", "));
+		probList.add(Arrays.toString(intervalo20).split("[\\[\\]]")[1].split(", "));
+		probList.add(Arrays.toString(intervalo50).split("[\\[\\]]")[1].split(", "));
+		probList.add(Arrays.toString(intervalo100).split("[\\[\\]]")[1].split(", "));
+		escreveArquivo("out/II4.txt", probList);
+
+		DecimalFormat df = new DecimalFormat("#.##");
+
+		System.out.println("Limite de confianca em provas de 10, 20, 50 e 100 questoes para os 5 alunos:");
+		System.out.println("Linha -> Prova[10, 20, 50, 100]");
+		System.out.println("Coluna -> Aluno[1(Inf-Sup), 2(Inf-Sup), 3(Inf-Sup), 4(Inf-Sup), 5(Inf-Sup)]");
+		System.out.println(df.format(intervalo10[0])  + " - " + df.format(intervalo10[1])  + " , " + df.format(intervalo10[2])  + " - " + df.format(intervalo10[3])  + " , " + df.format(intervalo10[4])  + " - " + df.format(intervalo10[5])  + " , " + df.format(intervalo10[6])  + " - " + df.format(intervalo10[7])  + " , " + df.format(intervalo10[8])  + " - " + df.format(intervalo10[9]));
+		System.out.println(df.format(intervalo20[0])  + " - " + df.format(intervalo20[1])  + " , " + df.format(intervalo20[2])  + " - " + df.format(intervalo20[3])  + " , " + df.format(intervalo20[4])  + " - " + df.format(intervalo20[5])  + " , " + df.format(intervalo20[6])  + " - " + df.format(intervalo20[7])  + " , " + df.format(intervalo20[8])  + " - " + df.format(intervalo20[9]));
+		System.out.println(df.format(intervalo50[0])  + " - " + df.format(intervalo50[1])  + " , " + df.format(intervalo50[2])  + " - " + df.format(intervalo50[3])  + " , " + df.format(intervalo50[4])  + " - " + df.format(intervalo50[5])  + " , " + df.format(intervalo50[6])  + " - " + df.format(intervalo50[7])  + " , " + df.format(intervalo50[8])  + " - " + df.format(intervalo50[9]));
+		System.out.println(df.format(intervalo100[0]) + " - " + df.format(intervalo100[1]) + " , " + df.format(intervalo100[2]) + " - " + df.format(intervalo100[3]) + " , " + df.format(intervalo100[4]) + " - " + df.format(intervalo100[5]) + " , " + df.format(intervalo100[6]) + " - " + df.format(intervalo100[7]) + " , " + df.format(intervalo100[8]) + " - " + df.format(intervalo100[9]));
+
+
+
+
 
 	}
 	// Métodos funcionais
@@ -1000,7 +1197,7 @@ class Main{
 
 		System.out.println("**********************************************************************");
 		System.out.println("Teoria de Resposta ao Item");
-		System.out.println("por Kaic Bastidas e Matheus Canon");
+		System.out.println("por Kaic Bastidas, Matheus Canon e Thiago Nobayashi");
 		System.out.println("Primeiro semestre de 2016");
 		System.out.println("**********************************************************************");
 
@@ -1081,14 +1278,16 @@ class Main{
 		System.out.println("Duração do calculo: " + duracao(tempoInicial, System.nanoTime()));
 
 		System.out.println("**********************************************************************");
+		System.out.println("Calculando intervalo de confianca da Habilidade usando uma Normal...");
+		tempoInicial = System.nanoTime();
+		intervaloDeConfiancaNormal(); // VII
+		System.out.println("Duração do calculo: " + duracao(tempoInicial, System.nanoTime()));
+
+
+		System.out.println("**********************************************************************");
 
 		// Tempo final da execução do programa
 		System.out.println("Duracao da execucao do programa: " + duracao(inicio, System.nanoTime()));
-
-
-		//Integer[] resp = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-		//Integer[] resp = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
-		//double teste = bissecaoProvaT(prova(10, theta[4], theta[3]),  resp);
 
   }
 }

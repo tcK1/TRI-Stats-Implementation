@@ -17,7 +17,7 @@ Dados os arquivos iniciais: "questoes.txt" e "respostas.txt", calcular:
 4. Estimador Pontual - Alunos
 5. Selecionando o melhor aluno - Habilidade do Aluno
 6. Intervalo de confiança - Habilidade do Aluno
-7. Intervalo de confiança - t-student
+7. Intervalo de confiança - Aproximando a uma Normal
 
 **Descrição dos diretórios do projeto:**
 ```

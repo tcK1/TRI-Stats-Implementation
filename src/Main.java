@@ -119,6 +119,18 @@ class Main{
 
 		esq = -5; dir = 5;
 
+		y_m = 0;
+		y_esq = 0;
+
+		boolean tudoZero = true;
+		for (int i = 0; i < respostas[al].length; i++){
+			if (respostas[al][i] != 0) tudoZero = false;
+		}
+		if (tudoZero) {
+			System.out.println(Arrays.toString(respostas[al]));
+		}
+
+
 		while ((dir-esq) > epsilon){ // Até a diferença dar um número menor que epsilon
 		  m = (esq+dir)/2; // Valor do meio
 
@@ -143,12 +155,15 @@ class Main{
 	}
 
 	// Encontrar o maximo da função por bisseção (para uma prova [questões e respostas])
-	public static double bissecaoProva(Integer[] quest, Integer[] resp){
+	public static double bissecaoProvaT(Integer[] quest, Integer[] resp){
 
 		double epsilon = 0.00001; // Valor minimo de diferença entre os dois limites
 		double esq, dir, m, y_m, y_esq;
 
 		esq = -5; dir = 5;
+
+		y_m = 0;
+		y_esq = 0;
 
 		while ((dir-esq) > epsilon){ // Até a diferença dar um número menor que epsilon
 			m = (esq+dir)/2; // Valor do meio
@@ -158,15 +173,88 @@ class Main{
 
 			// Derivada (Somatória)
 			for (int i = 0; i < quest.length; i++){
+
 				y_m += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+1);
 				y_esq += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+1);
+
+				//System.out.println(Arrays.toString(resp));
+				//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
+
 			}
 
 			if ((y_m > 0 && y_esq < 0) || (y_m < 0 && y_esq > 0)) dir = m; // f(a) e f(m) tem sinais diferentes
 			else esq = m; // f(a) e f(m) mesmos sinais
 
-			//System.out.println("Novo Intervalo: [" + esq + " .. " + dir + "]"); // Progresso
+			//System.out.println("Novo Intervalo: [" + esq + " .. " + dir + "]");
+			//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
+
+
 		}
+
+		//if (((esq+dir)/2) > 4.8){
+		//	System.out.println(Arrays.toString(resp));
+		//}
+
+		//System.out.println(Arrays.toString(resp));
+		//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
+		//System.out.println("Limites: [" + esq + " .. " + dir + "]");
+		//System.out.println("Solução aproximada = " + (esq+dir)/2 );
+
+
+		//System.out.println("Solução aproximada = " + (esq+dir)/2 );
+		return (esq+dir)/2; // Retorna o meio
+
+	}
+
+	// Encontrar o maximo da função por bisseção (para uma prova [questões e respostas])
+	public static double bissecaoProva(Integer[] quest, Integer[] resp){
+
+		double tol = 0.0001;
+		double esq, dir, m, y_m, y_esq;
+
+		esq = -5; dir = 5;
+
+		int n = 1;
+
+		while (n < N){ // Até a diferença dar um número menor que epsilon
+			m = (esq+dir)/2; // Valor do meio
+
+			y_m = 0;
+			y_esq = 0;
+
+			// Derivada (Somatória)
+			for (int i = 0; i < quest.length; i++){
+
+				y_m += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(m-b.get(quest[i])))+1);
+				y_esq += a.get(quest[i])*((resp[i]-1)*Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+resp[i])/(Math.exp(a.get(quest[i])*(esq-b.get(quest[i])))+1);
+
+				//System.out.println(Arrays.toString(resp));
+				//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
+
+			}
+
+			if (y_m == 0 || (dir-esq)/2 < tol){
+				//System.out.println(Arrays.toString(resp));
+				//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
+				//System.out.println("Limites: [" + esq + " .. " + dir + "]");
+				//System.out.println("Solução aproximada = " + (esq+dir)/2 );
+				return (esq+dir)/2;
+			} else {
+				if (Math.pow(y_m, y_esq) >= 0) esq = m; // f(a) e f(m) tem sinais diferentes
+				else dir = m; // f(a) e f(m) mesmos sinais
+			}
+
+			//System.out.println("Novo Intervalo: [" + esq + " .. " + dir + "]");
+			//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
+
+			n++;
+		}
+
+		//System.out.println(Arrays.toString(resp));
+		//System.out.println("Derivadas: [" + y_esq + " .. " + y_m + "]");
+		//System.out.println("Limites: [" + esq + " .. " + dir + "]");
+		//System.out.println("Solução aproximada = " + (esq+dir)/2 );
+
 
 		//System.out.println("Solução aproximada = " + (esq+dir)/2 );
 		return (esq+dir)/2; // Retorna o meio
@@ -623,6 +711,10 @@ class Main{
 		for (double d : pp) sum += d;
 		System.out.println("Media: " + sum/(double)pp.length);
 
+		double temp = 0;
+    for(double a : pp) temp += ((sum/(double)pp.length)-a)*((sum/(double)pp.length)-a);
+		System.out.println("Variancia: " + temp	/(double)pp.length);
+
 		// int alu = 0;
 		// for (double i : th) {
 		// 	System.out.println("Theta aluno " + alu + ": " + i);
@@ -886,6 +978,8 @@ class Main{
 		System.out.println(df.format(intervalo50[0])  + " - " + df.format(intervalo50[1])  + " , " + df.format(intervalo50[2])  + " - " + df.format(intervalo50[3])  + " , " + df.format(intervalo50[4])  + " - " + df.format(intervalo50[5])  + " , " + df.format(intervalo50[6])  + " - " + df.format(intervalo50[7])  + " , " + df.format(intervalo50[8])  + " - " + df.format(intervalo50[9]));
 		System.out.println(df.format(intervalo100[0]) + " - " + df.format(intervalo100[1]) + " , " + df.format(intervalo100[2]) + " - " + df.format(intervalo100[3]) + " , " + df.format(intervalo100[4]) + " - " + df.format(intervalo100[5]) + " , " + df.format(intervalo100[6]) + " - " + df.format(intervalo100[7]) + " , " + df.format(intervalo100[8]) + " - " + df.format(intervalo100[9]));
 
+		System.out.println(Arrays.toString(notas10[0]));
+
 	}
 	// Métodos funcionais
 
@@ -990,6 +1084,11 @@ class Main{
 
 		// Tempo final da execução do programa
 		System.out.println("Duracao da execucao do programa: " + duracao(inicio, System.nanoTime()));
+
+
+		//Integer[] resp = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		//Integer[] resp = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+		//double teste = bissecaoProvaT(prova(10, theta[4], theta[3]),  resp);
 
   }
 }

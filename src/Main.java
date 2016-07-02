@@ -347,23 +347,48 @@ class Main{
 
 	}
 
-	public static double media (Integer[] notas){
-
+	public static double media (Integer[] notas, double theta){
+		
+		// Real
+		/*
 		double sum = 0;
 		for (double a : notas) sum += a;
 		//System.out.println("Media: " + sum/(double)notas.length);
 		return sum/(double)notas.length;
-
+		*/
+		
+		// Probabilistico
+		double sum = 0;
+		for (int i : notas){
+			double teste = prob(theta, a.get(i), b.get(i));
+			sum += teste;
+			//System.out.println("Media: " + sum);
+		}
+		//System.out.println("Media: " + sum);
+		return sum;
+		
 	}
 
-	public static double variancia (Integer[] notas){
+	public static double variancia (Integer[] notas, double theta){
 
-		double med = media(notas);
+		double med = media(notas, theta);
+		
+		// Real
+		/*
 		double temp = 0;
-    for(double a : notas) temp += Math.pow((a-med), 2);
+		for (double a : notas) temp += Math.pow((a-med), 2);
 		//System.out.println("Variancia: " + temp	/(double)notas.length);
 		return temp/(double)notas.length;
-
+		*/
+		
+		//Probabilistico
+		double temp = 0;
+		for (int i : notas) {
+			temp += prob(theta, a.get(i), b.get(i))*(1-prob(theta, a.get(i), b.get(i)));
+			//System.out.println("Variancia: " + temp);
+		}
+		//System.out.println("Variancia: " + temp);
+		return temp;
 	}
 	// Métodos auxiliares
 
@@ -957,64 +982,83 @@ class Main{
 		Integer p100V[] = prova(100, theta[4], theta[3]);
 		/*** Mesmo procedimento de melhor prova ***/
 
-		Integer[][] notas10  = new Integer[5][N];
-		Integer[][] notas20  = new Integer[5][N];
-		Integer[][] notas50  = new Integer[5][N];
-		Integer[][] notas100 = new Integer[5][N];
+		double[] medias10 = new double[5];
+		double[] medias20 = new double[5];
+		double[] medias50 = new double[5];
+		double[] medias100 = new double[5];
 
-		// Para um numero consideravel de vezes, calcula quanto os alunos tiraram
+		double[] variancias10 = new double[5];
+		double[] variancias20 = new double[5];
+		double[] variancias50 = new double[5];
+		double[] variancias100 = new double[5];
+
 		Thread thr1 = new Thread() {
 			public void run() {
-				for (int i = 0; i < N; i++){
-					notas10[0][i]  = nota(p10V, theta[0]);
-					notas20[0][i]  = nota(p20V, theta[0]);
-					notas50[0][i]  = nota(p50V, theta[0]);
-					notas100[0][i] = nota(p100V, theta[0]);
-				}
+				medias10[0] = media(p10V, theta[0]);
+				medias20[0] = media(p20V, theta[0]);
+				medias50[0] = media(p50V, theta[0]);
+				medias100[0] = media(p100V, theta[0]);
+
+				variancias10[0] = variancia(p10V, theta[0]);
+				variancias20[0] = variancia(p20V, theta[0]);
+				variancias50[0] = variancia(p50V, theta[0]);
+				variancias100[0] = variancia(p100V, theta[0]);
 			}
 		};
 
 		Thread thr2 = new Thread() {
 			public void run() {
-				for (int i = 0; i < N; i++){
-					notas10[1][i]  = nota(p10V, theta[1]);
-					notas20[1][i]  = nota(p20V, theta[1]);
-					notas50[1][i]  = nota(p50V, theta[1]);
-					notas100[1][i] = nota(p100V, theta[1]);
-				}
+				medias10[1] = media(p10V, theta[1]);
+				medias20[1] = media(p20V, theta[1]);
+				medias50[1] = media(p50V, theta[1]);
+				medias100[1] = media(p100V, theta[1]);
+
+				variancias10[1] = variancia(p10V, theta[1]);
+				variancias20[1] = variancia(p20V, theta[1]);
+				variancias50[1] = variancia(p50V, theta[1]);
+				variancias100[1] = variancia(p100V, theta[1]);
 			}
 		};
 
 		Thread thr3 = new Thread() {
 			public void run() {
-				for (int i = 0; i < N; i++){
-					notas10[2][i]  = nota(p10V, theta[2]);
-					notas20[2][i]  = nota(p20V, theta[2]);
-					notas50[2][i]  = nota(p50V, theta[2]);
-					notas100[2][i] = nota(p100V, theta[2]);
-				}
+				medias10[2] = media(p10V, theta[2]);
+				medias20[2] = media(p20V, theta[2]);
+				medias50[2] = media(p50V, theta[2]);
+				medias100[2] = media(p100V, theta[2]);
+
+				variancias10[2] = variancia(p10V, theta[2]);
+				variancias20[2] = variancia(p20V, theta[2]);
+				variancias50[2] = variancia(p50V, theta[2]);
+				variancias100[2] = variancia(p100V, theta[2]);
 			}
 		};
 
 		Thread thr4 = new Thread() {
 			public void run() {
-				for (int i = 0; i < N; i++){
-					notas10[3][i]  = nota(p10V, theta[3]);
-					notas20[3][i]  = nota(p20V, theta[3]);
-					notas50[3][i]  = nota(p50V, theta[3]);
-					notas100[3][i] = nota(p100V, theta[3]);
-				}
+				medias10[3] = media(p10V, theta[3]);
+				medias20[3] = media(p20V, theta[3]);
+				medias50[3] = media(p50V, theta[3]);
+				medias100[3] = media(p100V, theta[3]);
+
+				variancias10[3] = variancia(p10V, theta[3]);
+				variancias20[3] = variancia(p20V, theta[3]);
+				variancias50[3] = variancia(p50V, theta[3]);
+				variancias100[3] = variancia(p100V, theta[3]);
 			}
 		};
 
 		Thread thr5 = new Thread() {
 			public void run() {
-				for (int i = 0; i < N; i++){
-					notas10[4][i]  = nota(p10V, theta[4]);
-					notas20[4][i]  = nota(p20V, theta[4]);
-					notas50[4][i]  = nota(p50V, theta[4]);
-					notas100[4][i] = nota(p100V, theta[4]);
-				}
+				medias10[4] = media(p10V, theta[4]);
+				medias20[4] = media(p20V, theta[4]);
+				medias50[4] = media(p50V, theta[4]);
+				medias100[4] = media(p100V, theta[4]);
+
+				variancias10[4] = variancia(p10V, theta[4]);
+				variancias20[4] = variancia(p20V, theta[4]);
+				variancias50[4] = variancia(p50V, theta[4]);
+				variancias100[4] = variancia(p100V, theta[4]);
 			}
 		};
 
@@ -1030,102 +1074,6 @@ class Main{
 			thr3.join();
 			thr4.join();
 			thr5.join();
-		} catch (InterruptedException ex) {
-			System.out.println(ex.getMessage());
-		}
-
-		double[] medias10 = new double[5];
-		double[] medias20 = new double[5];
-		double[] medias50 = new double[5];
-		double[] medias100 = new double[5];
-
-		double[] variancias10 = new double[5];
-		double[] variancias20 = new double[5];
-		double[] variancias50 = new double[5];
-		double[] variancias100 = new double[5];
-
-		Thread thr11 = new Thread() {
-			public void run() {
-				medias10[0] = media(notas10[0]);
-				medias20[0] = media(notas20[0]);
-				medias50[0] = media(notas50[0]);
-				medias100[0] = media(notas100[0]);
-
-				variancias10[0] = variancia(notas10[0]);
-				variancias20[0] = variancia(notas20[0]);
-				variancias50[0] = variancia(notas50[0]);
-				variancias100[0] = variancia(notas100[0]);
-			}
-		};
-
-		Thread thr22 = new Thread() {
-			public void run() {
-				medias10[1] = media(notas10[1]);
-				medias20[1] = media(notas20[1]);
-				medias50[1] = media(notas50[1]);
-				medias100[1] = media(notas100[1]);
-
-				variancias10[1] = variancia(notas10[1]);
-				variancias20[1] = variancia(notas20[1]);
-				variancias50[1] = variancia(notas50[1]);
-				variancias100[1] = variancia(notas100[1]);
-			}
-		};
-
-		Thread thr33 = new Thread() {
-			public void run() {
-				medias10[2] = media(notas10[2]);
-				medias20[2] = media(notas20[2]);
-				medias50[2] = media(notas50[2]);
-				medias100[2] = media(notas100[2]);
-
-				variancias10[2] = variancia(notas10[2]);
-				variancias20[2] = variancia(notas20[2]);
-				variancias50[2] = variancia(notas50[2]);
-				variancias100[2] = variancia(notas100[2]);
-			}
-		};
-
-		Thread thr44 = new Thread() {
-			public void run() {
-				medias10[3] = media(notas10[3]);
-				medias20[3] = media(notas20[3]);
-				medias50[3] = media(notas50[3]);
-				medias100[3] = media(notas100[3]);
-
-				variancias10[3] = variancia(notas10[3]);
-				variancias20[3] = variancia(notas20[3]);
-				variancias50[3] = variancia(notas50[3]);
-				variancias100[3] = variancia(notas100[3]);
-			}
-		};
-
-		Thread thr55 = new Thread() {
-			public void run() {
-				medias10[4] = media(notas10[4]);
-				medias20[4] = media(notas20[4]);
-				medias50[4] = media(notas50[4]);
-				medias100[4] = media(notas100[4]);
-
-				variancias10[4] = variancia(notas10[4]);
-				variancias20[4] = variancia(notas20[4]);
-				variancias50[4] = variancia(notas50[4]);
-				variancias100[4] = variancia(notas100[4]);
-			}
-		};
-
-		thr11.start();
-		thr22.start();
-		thr33.start();
-		thr44.start();
-		thr55.start();
-
-		try {
-			thr11.join();
-			thr22.join();
-			thr33.join();
-			thr44.join();
-			thr55.join();
 		} catch (InterruptedException ex) {
 			System.out.println(ex.getMessage());
 		}
